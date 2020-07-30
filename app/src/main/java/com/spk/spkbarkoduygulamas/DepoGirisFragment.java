@@ -55,6 +55,8 @@ public class DepoGirisFragment extends Fragment {
 
     Context context;
 
+    String doruk = "doruk";
+
     @Override
     public void onAttach(@NonNull Context context) {
         this.context = context;
