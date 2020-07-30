@@ -44,14 +44,16 @@ public class DepoGirisFragment extends Fragment {
     TextView tvAmbAdet;
     EditText editText_girilen_miktar;
     TextView textView_adres;
+
     ImageView ivTemizle;
     ImageView ivOnayla;
+
     TextView tvEvet;
     TextView tvHayir;
-    LinearLayout popup;
-    Context context;
 
-    String tugkan = "tugkan Sogut";
+    LinearLayout popup;
+
+    Context context;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -161,6 +163,7 @@ public class DepoGirisFragment extends Fragment {
                 if(barcode.contains("DEPO_")){
                     String depoAdi = barcode.substring(5);
                     textView_adres.setText(depoAdi);
+                    clipboard.setText(" ");
                     editText_girilen_miktar.setText("");
                 }
                 else{
