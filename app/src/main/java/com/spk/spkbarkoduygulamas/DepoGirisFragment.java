@@ -44,16 +44,14 @@ public class DepoGirisFragment extends Fragment {
     TextView tvAmbAdet;
     EditText editText_girilen_miktar;
     TextView textView_adres;
-
     ImageView ivTemizle;
     ImageView ivOnayla;
-
     TextView tvEvet;
     TextView tvHayir;
-
     LinearLayout popup;
-
     Context context;
+
+    String tugkan = "TUgkan sogutee";
 
     @Override
     public void onAttach(@NonNull Context context) {
