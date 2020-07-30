@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Spk Barkod Uygulaması</string>
+    <string name="barkod">BARKOD:</string>
+    <string name="kod">KOD:</string>
+    <string name="adi">ADI:</string>
+    <string name="c_ns">CİNSİ:</string>
+    <string name="b_r_m">BİRİMİ:</string>
+    <string name="asamadaki_miktar">AŞAMADAKİ MİKTAR:</string>
+    <string name="adres">ADRES:</string>
+    <string name="check">check</string>
+    <string name="clear" />
+    <string name="evet">EVET</string>
+    <string name="hayir">HAYIR</string>
+    <string name="onaylamak_sted_n_zden_em_n_m_s_n_z">ONAYLAMAK İSTEDİĞİNİZDEN EMİN MİSİNİZ ?</string>
+    <string name="adet_g_r_n_z">ADET GİRİNİZ:</string>
+</resources>

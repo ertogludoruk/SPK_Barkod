@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_navi"
+    app:startDestination="@id/splashFragment">
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.spk.spkbarkoduygulamas.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splashFragment_to_mainMenuFragment"
+            app:destination="@id/mainMenuFragment"
+            app:popUpTo="@id/app_navi"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/mainMenuFragment"
+        android:name="com.spk.spkbarkoduygulamas.MainMenuFragment"
+        android:label="fragment_main_menu"
+        tools:layout="@layout/fragment_main_menu" >
+        <action
+            android:id="@+id/action_mainMenuFragment_to_urunOkuFragment"
+            app:destination="@id/urunOkuFragment" />
+        <action
+            android:id="@+id/action_mainMenuFragment_to_depoGirisFragment"
+            app:destination="@id/depoGirisFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/urunOkuFragment"
+        android:name="com.spk.spkbarkoduygulamas.UrunOkuFragment"
+        android:label="fragment_urun_oku"
+        tools:layout="@layout/fragment_urun_oku" />
+    <fragment
+        android:id="@+id/depoGirisFragment"
+        android:name="com.spk.spkbarkoduygulamas.DepoGirisFragment"
+        android:label="fragment_depo_giris"
+        tools:layout="@layout/fragment_depo_giris" />
+</navigation>
