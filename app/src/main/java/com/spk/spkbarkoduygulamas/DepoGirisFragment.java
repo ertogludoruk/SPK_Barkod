@@ -157,6 +157,7 @@ public class DepoGirisFragment extends Fragment {
         clipboard.addPrimaryClipChangedListener(new ClipboardManager.OnPrimaryClipChangedListener() {
             @Override
             public void onPrimaryClipChanged() {
+                editText_girilen_miktar.clearFocus();
                 String barcode = Objects.requireNonNull(clipboard.getPrimaryClip()).getItemAt(0).coerceToText(context).toString();
                 if(barcode.equals(" ")){return;}
                 if(barcode.contains("DEPO_")){
