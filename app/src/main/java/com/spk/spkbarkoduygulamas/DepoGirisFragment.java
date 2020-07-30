@@ -44,6 +44,7 @@ public class DepoGirisFragment extends Fragment {
     TextView tvHayir;
     LinearLayout popup;
     Context context;
+    View layoutdummy;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -82,6 +83,9 @@ public class DepoGirisFragment extends Fragment {
         tvHayir = view.findViewById(R.id.textViewHayir);
         editText_girilen_miktar = view.findViewById(R.id.editTextGirelenAdet);
         textView_adres = view.findViewById(R.id.textViewAdres);
+        layoutdummy = view.findViewById(R.id.layoutdepogiris);
+
+        editText_girilen_miktar.requestFocus();
 
         ivTemizle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,17 +130,17 @@ public class DepoGirisFragment extends Fragment {
         clipboard.addPrimaryClipChangedListener(new ClipboardManager.OnPrimaryClipChangedListener() {
             @Override
             public void onPrimaryClipChanged() {
-                editText_girilen_miktar.clearFocus();
                 String barcode = Objects.requireNonNull(clipboard.getPrimaryClip()).getItemAt(0).coerceToText(context).toString();
+                editText_girilen_miktar.setEnabled(false);
                 if(barcode.contains("DEPO_")){
                     String depoAdi = barcode.substring(5);
                     textView_adres.setText(depoAdi);
-                    editText_girilen_miktar.setText("");
                 }
                 else{
                     DepoGirisFragment.ReadBarcode1 readBarcode = new DepoGirisFragment.ReadBarcode1();
                     readBarcode.execute(barcode);
                 }
+
 
             }
         });
@@ -216,6 +220,8 @@ public class DepoGirisFragment extends Fragment {
                 tvStokBirimi.setText(s.getBirim1());
                 tvAmbAdet.setText(s.getAmbalajAdeti().toString() );
             }
+            editText_girilen_miktar.requestFocus();
+            editText_girilen_miktar.setEnabled(true);
         }
     }
     private void ClearInputsUI(){
