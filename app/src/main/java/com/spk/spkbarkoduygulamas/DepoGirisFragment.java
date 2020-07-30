@@ -51,8 +51,6 @@ public class DepoGirisFragment extends Fragment {
     LinearLayout popup;
     Context context;
 
-    String tugkan = "TUgkan sogutee";
-
     @Override
     public void onAttach(@NonNull Context context) {
         this.context = context;
