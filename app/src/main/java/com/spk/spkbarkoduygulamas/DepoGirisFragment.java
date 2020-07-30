@@ -1,30 +1,24 @@
 package com.spk.spkbarkoduygulamas;
 
-import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.spk.spkbarkoduygulamas.helpers.DBManager;
 import com.spk.spkbarkoduygulamas.helpers.Urun;
-
-import org.w3c.dom.Text;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -50,8 +44,6 @@ public class DepoGirisFragment extends Fragment {
     TextView tvHayir;
     LinearLayout popup;
     Context context;
-
-    String tugkan = "TUgkan sogutee";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -88,20 +80,16 @@ public class DepoGirisFragment extends Fragment {
         popup = view.findViewById(R.id.popUpWindow);
         tvEvet = view.findViewById(R.id.textViewEvet);
         tvHayir = view.findViewById(R.id.textViewHayir);
+        editText_girilen_miktar = view.findViewById(R.id.editTextGirelenAdet);
+        textView_adres = view.findViewById(R.id.textViewAdres);
 
         ivTemizle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tvStokBarkod.setText("");
-                tvStokKodu.setText("");
-                tvStokAdi.setText("");
-                tvStokCinsi.setText("");
-                tvStokBirimi.setText("");
-                tvAmbAdet.setText("");
-                editText_girilen_miktar.setText("");
-                textView_adres.setText("");
+                ClearInputsUI();
             }
         });
+
         ivOnayla.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,14 +112,7 @@ public class DepoGirisFragment extends Fragment {
                             ivTemizle.setEnabled(true);
                             ivOnayla.setEnabled(true);
                             popup.setVisibility(View.INVISIBLE);
-                            tvStokBarkod.setText("");
-                            tvStokKodu.setText("");
-                            tvStokAdi.setText("");
-                            tvStokCinsi.setText("");
-                            tvStokBirimi.setText("");
-                            tvAmbAdet.setText("");
-                            editText_girilen_miktar.setText("");
-                            textView_adres.setText("");
+                            ClearInputsUI();
                         }
                     });
                 }
@@ -141,27 +122,15 @@ public class DepoGirisFragment extends Fragment {
             }
         });
 
-        editText_girilen_miktar = view.findViewById(R.id.editTextGirelenAdet);
-        editText_girilen_miktar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-               // v.clearFocus();
-                return false;
-            }
-        });
-        textView_adres = view.findViewById(R.id.textViewAdres);
-
-        final ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(CLIPBOARD_SERVICE);
+        final ClipboardManager clipboard = (ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE);
         clipboard.addPrimaryClipChangedListener(new ClipboardManager.OnPrimaryClipChangedListener() {
             @Override
             public void onPrimaryClipChanged() {
                 editText_girilen_miktar.clearFocus();
                 String barcode = Objects.requireNonNull(clipboard.getPrimaryClip()).getItemAt(0).coerceToText(context).toString();
-                if(barcode.equals(" ")){return;}
                 if(barcode.contains("DEPO_")){
                     String depoAdi = barcode.substring(5);
                     textView_adres.setText(depoAdi);
-                    clipboard.setText(" ");
                     editText_girilen_miktar.setText("");
                 }
                 else{
@@ -173,13 +142,9 @@ public class DepoGirisFragment extends Fragment {
         });
         return view;
     }
-    public class ReadBarcode1 extends AsyncTask<String,String, Urun>{
-
-        boolean isSuccess;
-
+    private class ReadBarcode1 extends AsyncTask<String,String, Urun>{
         @Override
         protected void onPreExecute() {
-            isSuccess = false;
         }
 
         @Override
@@ -200,8 +165,7 @@ public class DepoGirisFragment extends Fragment {
                 ps.close();
 
                 queryStmt =
-                        String.format("SELECT [sto_isim],[sto_cins],[sto_birim1_ad],[sto_birim2_ad],[sto_birim2_katsayi] FROM [MikroDB_V16_V01].[dbo].[STOKLAR] WHERE [sto_kod]='%s'", stok_kodu);
-
+                        String.format("SELECT [sto_isim],[sto_cins],[sto_birim1_ad],[sto_birim2_ad],[sto_birim2_katsayi] FROM [STOKLAR] WHERE [sto_kod]='%s'", stok_kodu);
                 ps = connect.prepareStatement(queryStmt);
 
                 rs = ps.executeQuery();
@@ -213,15 +177,15 @@ public class DepoGirisFragment extends Fragment {
 
                 ps.close();
                 queryStmt =
-                        String.format("SELECT [sto_isim],[sto_cins],[sto_birim1_ad],[sto_birim2_ad],[sto_birim2_katsayi] FROM [MikroDB_V16_V01].[dbo].[STOKLAR] WHERE [sto_kod]='%s'", stok_kodu);
+                        String.format("SELECT [sto_isim],[sto_cins],[sto_birim1_ad],[sto_birim2_ad],[sto_birim2_katsayi] FROM [STOKLAR] WHERE [sto_kod]='%s'", stok_kodu);
                 ps = connect.prepareStatement(queryStmt);
 
                 rs = ps.executeQuery();
                 rs.next();
-                ps.close()
-                ;
+                ps.close();
                 Urun okunanUrun = new Urun(barcode,urunadi,cins,birim,stok_kodu,ambalajIciAdeti);
-                isSuccess = true;
+                publishProgress("STOK OKUNDU");
+
                 return okunanUrun;
             } catch (SQLException e) {
                 String hata = e.getSQLState();
@@ -237,17 +201,14 @@ public class DepoGirisFragment extends Fragment {
 
                 return null;
             } catch (Exception e) {
-                e.printStackTrace();
-                Throwable za = e.getCause();
+                publishProgress("Hata Kodu: "+e.getLocalizedMessage());
                 return null;
             }
         }
 
         @Override
         protected void onPostExecute(Urun s) {
-
-            if(isSuccess){
-                Toast.makeText(context, "STOK OKUNDU", Toast.LENGTH_SHORT).show();
+            if(s != null ){
                 tvStokBarkod.setText(s.getBarkod());
                 tvStokKodu.setText(s.getStokKodu());
                 tvStokAdi.setText(s.getIsim());
@@ -256,5 +217,15 @@ public class DepoGirisFragment extends Fragment {
                 tvAmbAdet.setText(s.getAmbalajAdeti().toString() );
             }
         }
+    }
+    private void ClearInputsUI(){
+        tvStokBarkod.setText("");
+        tvStokKodu.setText("");
+        tvStokAdi.setText("");
+        tvStokCinsi.setText("");
+        tvStokBirimi.setText("");
+        tvAmbAdet.setText("");
+        editText_girilen_miktar.setText("");
+        textView_adres.setText("");
     }
 }
