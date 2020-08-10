@@ -13,4 +13,9 @@
     <string name="hayir">HAYIR</string>
     <string name="onaylamak_sted_n_zden_em_n_m_s_n_z">ONAYLAMAK İSTEDİĞİNİZDEN EMİN MİSİNİZ ?</string>
     <string name="adet_g_r_n_z">ADET GİRİNİZ:</string>
+    <string name="barkod_g_r_n_z">BARKOD GİRİNİZ:</string>
+    <string name="veya">VEYA</string>
+    <string name="r_n_adi">ÜRÜN ADI:</string>
+    <string name="ver_tabaninda_ara">VERİTABANINDA ARA</string>
+    <string name="stok_kodu">STOK KODU:</string>
 </resources>

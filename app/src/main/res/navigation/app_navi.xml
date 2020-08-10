@@ -26,6 +26,9 @@
         <action
             android:id="@+id/action_mainMenuFragment_to_depoGirisFragment"
             app:destination="@id/depoGirisFragment" />
+        <action
+            android:id="@+id/action_mainMenuFragment_to_urunAraFragment"
+            app:destination="@id/urunAraFragment" />
     </fragment>
     <fragment
         android:id="@+id/urunOkuFragment"
@@ -37,4 +40,8 @@
         android:name="com.spk.spkbarkoduygulamas.DepoGirisFragment"
         android:label="fragment_depo_giris"
         tools:layout="@layout/fragment_depo_giris" />
+    <fragment
+        android:id="@+id/urunAraFragment"
+        android:name="com.spk.spkbarkoduygulamas.UrunAraFragment"
+        android:label="UrunAraFragment" />
 </navigation>

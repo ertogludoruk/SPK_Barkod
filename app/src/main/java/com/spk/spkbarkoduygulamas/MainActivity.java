@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import com.spk.spkbarkoduygulamas.helpers.DBManager;
 
+/* CREATED BY Doruk Ertoğlu and
+ Tuğkan Söğüt 2020 */
+
 public class MainActivity extends AppCompatActivity {
 
     @Override

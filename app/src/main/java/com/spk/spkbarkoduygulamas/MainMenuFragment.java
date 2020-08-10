@@ -19,6 +19,7 @@ public class MainMenuFragment extends Fragment {
 
     ImageView okuImage;
     ImageView depoGirisImage;
+    ImageView depoAra;
 
 
     public MainMenuFragment() {
@@ -55,6 +56,13 @@ public class MainMenuFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Navigation.findNavController(getActivity(),R.id.navigationFragment).navigate(R.id.action_mainMenuFragment_to_depoGirisFragment);
+            }
+        });
+        depoAra = view.findViewById(R.id.imageView_DepoAra);
+        depoAra.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(getActivity(),R.id.navigationFragment).navigate(R.id.action_mainMenuFragment_to_urunAraFragment);
             }
         });
 
