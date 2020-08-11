@@ -135,13 +135,12 @@ public class DepoGirisFragment extends Fragment {
                 if(barcode.contains("DEPO_")){
                     String depoAdi = barcode.substring(5);
                     textView_adres.setText(depoAdi);
+                    editText_girilen_miktar.setEnabled(true);
                 }
                 else{
                     DepoGirisFragment.ReadBarcode1 readBarcode = new DepoGirisFragment.ReadBarcode1();
                     readBarcode.execute(barcode);
                 }
-
-
             }
         });
         return view;
