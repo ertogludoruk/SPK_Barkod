@@ -7,9 +7,9 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,16 +21,16 @@ import androidx.fragment.app.Fragment;
 import com.spk.spkbarkoduygulamas.helpers.DBManager;
 import com.spk.spkbarkoduygulamas.helpers.Urun;
 
-import org.w3c.dom.Text;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 
 public class UrunAraFragment extends Fragment {
-    EditText edit_text_StokBarkod;
-    EditText edit_text_StokKodu;
+    AutoCompleteTextView edit_text_StokBarkod;
+    AutoCompleteTextView edit_text_StokKodu;
     Context context;
     Button buttonAra;
     TextView tvStokBarkod, tvStokKodu, tvStokAdi;
@@ -52,8 +52,34 @@ public class UrunAraFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); }
 
-    public void refreshList(String text){
-
+    public List<String> refreshList(String text, String column){
+        List<String> list_barkod = new LinkedList<String>();
+        try{
+            Connection connect = DBManager.CONN_MSSql_DB("MikroDB_V16_V01","mikros","mikro","192.168.1.249");
+            String queryStmt =
+                    "SELECT * FROM [BARKOD_TANIMLARI] WHERE ["+ column +"] LIKE '"+ text + "%'";
+            PreparedStatement ps = connect.prepareStatement(queryStmt);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String str = rs.getString(column);
+                list_barkod.add(str);
+            }
+        } catch (SQLException e) {
+            String hata = e.getSQLState();
+            if(hata.equals("24000")){
+                Toast.makeText(context, "Stokta Ürün Kayıtlı Değil", Toast.LENGTH_SHORT).show();
+            }
+            else if(hata.equals("08S01")){
+                Toast.makeText(context, "Cihazın Bağlantısını Kontrol Edin", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                Toast.makeText(context, "Veritabanı Hatası, Uygulama Güncellenmeli", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Throwable za = e.getCause();
+        }
+        return list_barkod;
     }
 
     @Nullable
@@ -73,18 +99,36 @@ public class UrunAraFragment extends Fragment {
         edit_text_StokBarkod.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String text = edit_text_StokBarkod.getText().toString();
-                refreshList(text);
+                String text_barkod = edit_text_StokBarkod.getText().toString();
+                List<String> list_barkod = refreshList(text_barkod, "bar_kodu");
+                ArrayAdapter<String> adapter =new ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, list_barkod);
+                edit_text_StokBarkod.setAdapter(adapter);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+            }
+        });
 
+        edit_text_StokKodu.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String text_stok = edit_text_StokKodu.getText().toString();
+                List<String> list_stok = refreshList(text_stok, "bar_stokkodu");
+                ArrayAdapter<String> adapter =new ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, list_stok);
+                edit_text_StokKodu.setAdapter(adapter);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
             }
         });
 
@@ -94,6 +138,7 @@ public class UrunAraFragment extends Fragment {
                 if(!edit_text_StokKodu.getText().toString().equals("") & !edit_text_StokBarkod.getText().toString().equals("")){
                     edit_text_StokBarkod.setText("");
                     edit_text_StokKodu.setText("");
+                    popUp.setVisibility(View.GONE);
                     Toast.makeText(context, "İKİ SEÇENEK AYNI ANDA ARANAMAZ", Toast.LENGTH_SHORT).show();
                 }
                 if (!edit_text_StokBarkod.getText().toString().equals("")){
@@ -212,5 +257,4 @@ public class UrunAraFragment extends Fragment {
 
         return view;
     }
-
 }

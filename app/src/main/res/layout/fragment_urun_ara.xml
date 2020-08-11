@@ -33,7 +33,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textSize="20sp" />
 
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/editTextBarkod"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
@@ -73,7 +73,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textSize="20sp" />
 
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/editTextKodu"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
