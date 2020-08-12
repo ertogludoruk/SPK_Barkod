@@ -7,15 +7,16 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
         android:orientation="vertical"
-        android:paddingLeft="10dp"
-        android:paddingTop="10dp"
-        android:paddingRight="10dp"
-        android:paddingBottom="10dp"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="-64dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:id="@+id/linear1"
@@ -77,15 +78,15 @@
                 android:id="@+id/editTextKodu"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:autofillHints=""
                 android:ems="10"
-                android:inputType="textPersonName"
-                android:autofillHints="" />
+                android:inputType="textPersonName" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:orientation="horizontal"></LinearLayout>
+            android:layout_height="10dp"
+            android:orientation="horizontal" />
 
         <LinearLayout
             android:id="@+id/popUp"
@@ -105,25 +106,23 @@
                 android:showDividers="middle">
 
                 <TextView
-                    android:id="@+id/textView27"
+                    android:id="@+id/textView31"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.25"
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
-                    android:text="@string/barkod"
+                    android:text="@string/adi"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/textViewBarkod"
+                    android:id="@+id/textViewStokAdi"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.75"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textColor="#000000" />
-
             </LinearLayout>
 
             <LinearLayout
@@ -162,26 +161,37 @@
                 android:showDividers="middle">
 
                 <TextView
-                    android:id="@+id/textView31"
+                    android:id="@+id/textView121"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.25"
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
-                    android:text="@string/adi"
+                    android:text="@string/barkod"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/textViewStokAdi"
+                    android:id="@+id/textViewBarkod"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.75"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textColor="#000000" />
+
             </LinearLayout>
 
         </LinearLayout>
+
+        <ListView
+            android:id="@+id/listview"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp" />
 
     </LinearLayout>
 
@@ -194,6 +204,8 @@
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -71,8 +71,6 @@ public class UrunOkuFragment extends Fragment {
         tvStokBirimi = view.findViewById(R.id.textViewBirim);
         tvAmbAdet = view.findViewById(R.id.textViewAdet);
 
-
-
         final ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(CLIPBOARD_SERVICE);
         clipboard.addPrimaryClipChangedListener(new ClipboardManager.OnPrimaryClipChangedListener() {
             @Override
@@ -84,7 +82,6 @@ public class UrunOkuFragment extends Fragment {
                 readBarcode.execute(barcode);
             }
         });
-
 
         return view;
     }
@@ -154,7 +151,6 @@ public class UrunOkuFragment extends Fragment {
                 else{
                     publishProgress("Veritabanı Hatası, Uygulama Güncellenmeli");
                 }
-
                 return null;
             } catch (Exception e) {
                 e.printStackTrace();

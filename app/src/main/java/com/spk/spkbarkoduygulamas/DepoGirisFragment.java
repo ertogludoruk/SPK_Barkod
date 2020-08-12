@@ -24,6 +24,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.Objects;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
@@ -112,6 +113,15 @@ public class DepoGirisFragment extends Fragment {
                     tvEvet.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            try {
+                                Connection connect = DBManager.CONN_MSSql_DB("DEPO_DB","depo_us","depo2020","192.168.1.249");
+                                String queryStmt = "INSERT INTO [DEPO_DB].[dbo].[GirisHareketleri] (Urun_Kodu, Girilen_Miktar, Giris_Tarihi, Girilen_Adres) VALUES ('"+tvStokKodu.getText().toString()+
+                                        "', '" + editText_girilen_miktar.getText().toString()+"', CURRENT_TIMESTAMP, '"+textView_adres.getText().toString()+"')";
+                                PreparedStatement ps = connect.prepareStatement(queryStmt);
+                                ps.executeUpdate();
+                            } catch (SQLException | ClassNotFoundException e) {
+                                e.printStackTrace();
+                            }
                             Toast.makeText(context, "STOK EKLENDİ", Toast.LENGTH_SHORT).show();
                             ivTemizle.setEnabled(true);
                             ivOnayla.setEnabled(true);

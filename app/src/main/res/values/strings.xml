@@ -18,4 +18,6 @@
     <string name="r_n_adi">ÜRÜN ADI:</string>
     <string name="ver_tabaninda_ara">VERİTABANINDA ARA</string>
     <string name="stok_kodu">STOK KODU:</string>
+    <string name="tar_h">TARİH:</string>
+    <string name="m_ktar">MİKTAR:</string>
 </resources>

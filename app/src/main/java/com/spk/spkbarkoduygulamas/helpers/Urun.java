@@ -1,5 +1,7 @@
 package com.spk.spkbarkoduygulamas.helpers;
 
+import java.util.Date;
+
 public class Urun {
     private String Isim;
     private Integer Cins;
@@ -41,3 +43,4 @@ public class Urun {
         return AmbalajAdeti;
     }
 }
+

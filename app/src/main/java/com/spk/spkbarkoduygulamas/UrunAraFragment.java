@@ -7,10 +7,13 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.spk.spkbarkoduygulamas.helpers.DBManager;
+import com.spk.spkbarkoduygulamas.helpers.DepoUrun;
 import com.spk.spkbarkoduygulamas.helpers.Urun;
 
 import java.sql.Connection;
@@ -35,6 +39,7 @@ public class UrunAraFragment extends Fragment {
     Button buttonAra;
     TextView tvStokBarkod, tvStokKodu, tvStokAdi;
     LinearLayout popUp;
+    ListView listview;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -96,6 +101,8 @@ public class UrunAraFragment extends Fragment {
 
         popUp = view.findViewById(R.id.popUp);
 
+        listview = view.findViewById(R.id.listview);
+
         edit_text_StokBarkod.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -147,41 +154,56 @@ public class UrunAraFragment extends Fragment {
                         Connection connect = DBManager.CONN_MSSql_DB("MikroDB_V16_V01","mikros","mikro","192.168.1.249");
                         String queryStmt =
                                 String.format("SELECT [bar_stokkodu] FROM [BARKOD_TANIMLARI] WHERE [bar_kodu]='%s'", text);
-
                         PreparedStatement ps = connect.prepareStatement(queryStmt);
-
                         ResultSet rs = ps.executeQuery();
                         rs.next();
-
                         String stok_kodu= rs.getString("bar_stokkodu");
                         ps.close();
 
                         queryStmt =
                                 String.format("SELECT [sto_isim],[sto_cins],[sto_birim1_ad],[sto_birim2_ad],[sto_birim2_katsayi] FROM [MikroDB_V16_V01].[dbo].[STOKLAR] WHERE [sto_kod]='%s'", stok_kodu);
-
                         ps = connect.prepareStatement(queryStmt);
-
                         rs = ps.executeQuery();
                         rs.next();
                         String urunadi = rs.getString("sto_isim");
                         String birim = rs.getString("sto_birim1_ad");
                         Integer cins = rs.getInt("sto_cins");
                         Integer ambalajIciAdeti = Math.abs(rs.getInt("sto_birim2_katsayi")) ;
-
                         ps.close();
+
                         queryStmt =
                                 String.format("SELECT [sto_isim],[sto_cins],[sto_birim1_ad],[sto_birim2_ad],[sto_birim2_katsayi] FROM [MikroDB_V16_V01].[dbo].[STOKLAR] WHERE [sto_kod]='%s'", stok_kodu);
                         ps = connect.prepareStatement(queryStmt);
-
                         rs = ps.executeQuery();
                         rs.next();
                         ps.close();
+
+                        connect = DBManager.CONN_MSSql_DB("DEPO_DB","depo_us","depo2020","192.168.1.249");
+                        queryStmt = String.format("SELECT [Girilen_Miktar], [Giris_Tarihi], [Girilen_Adres] FROM [DEPO_DB].[dbo].[GirisHareketleri] WHERE [Urun_Kodu]='%s'", stok_kodu);
+                        ps = connect.prepareStatement(queryStmt);
+                        rs = ps.executeQuery();
+
+                        List<String> tempList = new LinkedList<String>();
+
+                        while(rs.next()){
+                            DepoUrun depoUrun = new DepoUrun(stok_kodu, rs.getInt("Girilen_Miktar"),
+                                    rs.getString("Girilen_Adres"), rs.getDate("Giris_Tarihi"));
+                            tempList.add(depoUrun.printUrun());
+                        }
+                        ps.close();
+
                         Urun okunanUrun = new Urun(text,urunadi,cins,birim,stok_kodu,ambalajIciAdeti);
                         Toast.makeText(context, "ÜRÜN BULUNDU", Toast.LENGTH_SHORT).show();
+
                         tvStokBarkod.setText(okunanUrun.getBarkod());
                         tvStokKodu.setText(okunanUrun.getStokKodu());
                         tvStokAdi.setText(okunanUrun.getIsim());
+
+                        ArrayAdapter<String> listAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, tempList);
+                        listview.setAdapter(listAdapter);
+
                         popUp.setVisibility(View.VISIBLE);
+
                     } catch (SQLException e) {
                         String hata = e.getSQLState();
                         if(hata.equals("24000")){
@@ -230,11 +252,30 @@ public class UrunAraFragment extends Fragment {
                         rs.next();
                         ps.close();
 
+                        connect = DBManager.CONN_MSSql_DB("DEPO_DB", "depo_us", "depo2020", "192.168.1.249");
+                        queryStmt = String.format("SELECT [Girilen_Miktar], [Giris_Tarihi], [Girilen_Adres] FROM [DEPO_DB].[dbo].[GirisHareketleri] WHERE [Urun_Kodu]='%s'", text);
+                        ps = connect.prepareStatement(queryStmt);
+                        rs = ps.executeQuery();
+
+                        List<String> tempList = new LinkedList<String>();
+
+                        while(rs.next()){
+                            DepoUrun depoUrun = new DepoUrun(text, rs.getInt("Girilen_Miktar"),
+                                    rs.getString("Girilen_Adres"), rs.getDate("Giris_Tarihi"));
+                            tempList.add(depoUrun.printUrun());
+                        }
+                        ps.close();
+
+
                         Urun okunanUrun = new Urun(bar_kodu,urunadi,cins,birim,text,ambalajIciAdeti);
                         Toast.makeText(context, "ÜRÜN BULUNDU", Toast.LENGTH_SHORT).show();
                         tvStokBarkod.setText(okunanUrun.getBarkod());
                         tvStokKodu.setText(okunanUrun.getStokKodu());
                         tvStokAdi.setText(okunanUrun.getIsim());
+
+                        ArrayAdapter<String> listAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, tempList);
+                        listview.setAdapter(listAdapter);
+
                         popUp.setVisibility(View.VISIBLE);
                     } catch (SQLException e) {
                         String hata = e.getSQLState();
