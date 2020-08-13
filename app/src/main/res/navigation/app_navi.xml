@@ -43,5 +43,13 @@
     <fragment
         android:id="@+id/urunAraFragment"
         android:name="com.spk.spkbarkoduygulamas.UrunAraFragment"
-        android:label="UrunAraFragment" />
+        android:label="UrunAraFragment" >
+        <action
+            android:id="@+id/action_urunAraFragment_to_urunGosterFragment"
+            app:destination="@id/urunGosterFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/urunGosterFragment"
+        android:name="com.spk.spkbarkoduygulamas.UrunGosterFragment"
+        android:label="UrunGosterFragment" />
 </navigation>
