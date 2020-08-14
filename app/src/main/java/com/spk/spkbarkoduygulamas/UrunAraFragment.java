@@ -39,7 +39,6 @@ public class UrunAraFragment extends Fragment {
     AutoCompleteTextView edit_text_StokKodu;
     Context context;
     Button buttonAra;
-    TextView tvStokBarkod, tvStokKodu, tvStokAdi;
     ListView listview;
 
     @Override

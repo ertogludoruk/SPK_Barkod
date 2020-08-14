@@ -187,7 +187,6 @@ public class UrunGosterFragment extends Fragment {
                 }
                 ps.close();
 
-
                 Urun okunanUrun = new Urun(bar_kodu,urunadi,cins,birim,text,ambalajIciAdeti);
                 Toast.makeText(context, "ÜRÜN BULUNDU", Toast.LENGTH_SHORT).show();
                 tvBarkod.setText(okunanUrun.getBarkod());
