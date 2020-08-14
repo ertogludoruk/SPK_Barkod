@@ -184,6 +184,8 @@ public class DepoGirisFragment extends Fragment {
                 rs = ps.executeQuery();
                 rs.next();
                 String urunadi = rs.getString("sto_isim");
+                urunadi = urunadi.trim().replaceAll(" +", " ");
+                urunadi = urunadi.substring(1, urunadi.length()-1);
                 String birim = rs.getString("sto_birim1_ad");
                 Integer cins = rs.getInt("sto_cins");
                 Integer ambalajIciAdeti = Math.abs(rs.getInt("sto_birim2_katsayi")) ;
