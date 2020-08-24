@@ -29,18 +29,12 @@ import java.util.Objects;
 import static android.content.Context.CLIPBOARD_SERVICE;
 
 public class DepoCikisFragment extends Fragment {
-    TextView tvStokBarkod;
-    TextView tvStokKodu;
-    TextView tvStokAdi;
-    TextView tvStokCinsi;
-    TextView tvStokBirimi;
-    TextView tvAmbAdet;
+    TextView tvStokBarkod, tvStokKodu, tvStokAdi;
+    TextView tvStokCinsi, tvStokBirimi, tvAmbAdet;
     EditText editText_girilen_miktar;
     TextView textView_adres;
-    ImageView ivTemizle;
-    ImageView ivOnayla;
-    TextView tvEvet;
-    TextView tvHayir;
+    ImageView ivTemizle, ivOnayla;
+    TextView tvEvet, tvHayir;
     LinearLayout popup;
     Context context;
     View layoutdummy;
