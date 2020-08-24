@@ -34,8 +34,8 @@ public class UrunGosterFragment extends Fragment {
     LinearLayout popUp;
     ListView listview;
     Context context;
-    String stokBarkod;
-    String stokKodu;
+    String data;
+    String spinnerValue;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -62,8 +62,8 @@ public class UrunGosterFragment extends Fragment {
 
         Bundle bd = this.getArguments();
         assert bd != null;
-        stokBarkod = bd.getString("key1");
-        stokKodu = bd.getString("key2");
+        data = bd.getString("key1");
+        spinnerValue = bd.getString("key2");
 
         tvAdi = view.findViewById(R.id.textViewStokAdi);
         tvStokkodu = view.findViewById(R.id.textViewStokKodu);
@@ -71,8 +71,8 @@ public class UrunGosterFragment extends Fragment {
         popUp = view.findViewById(R.id.popUp);
         listview = view.findViewById(R.id.listview);
 
-        if (!stokBarkod.equals("")){
-            String text = stokBarkod;
+        if (spinnerValue.equals("bar_kodu")){
+            String text = data;
             try {
                 Connection connect = DBManager.CONN_MSSql_DB("MikroDB_V16_V01","mikros","mikro","192.168.1.249");
                 String queryStmt =
@@ -145,8 +145,8 @@ public class UrunGosterFragment extends Fragment {
                 Throwable za = e.getCause();
             }
         }
-        if(!stokKodu.equals("")){
-            String text = stokKodu;
+        else if(spinnerValue.equals("bar_stokkodu")){
+            String text = data;
             try {
                 Connection connect = DBManager.CONN_MSSql_DB("MikroDB_V16_V01","mikros","mikro","192.168.1.249");
                 String queryStmt =
@@ -216,6 +216,9 @@ public class UrunGosterFragment extends Fragment {
                 e.printStackTrace();
                 Throwable za = e.getCause();
             }
+        }
+        else{
+
         }
 
         return view;

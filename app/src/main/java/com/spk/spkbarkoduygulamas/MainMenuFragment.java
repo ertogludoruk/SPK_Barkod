@@ -19,7 +19,8 @@ public class MainMenuFragment extends Fragment {
 
     ImageView okuImage;
     ImageView depoGirisImage;
-    ImageView depoAra;
+    ImageView depoAraImage;
+    ImageView depoCikisImage;
 
 
     public MainMenuFragment() {
@@ -58,11 +59,18 @@ public class MainMenuFragment extends Fragment {
                 Navigation.findNavController(getActivity(),R.id.navigationFragment).navigate(R.id.action_mainMenuFragment_to_depoGirisFragment);
             }
         });
-        depoAra = view.findViewById(R.id.imageView_DepoAra);
-        depoAra.setOnClickListener(new View.OnClickListener() {
+        depoAraImage = view.findViewById(R.id.imageView_DepoAra);
+        depoAraImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Navigation.findNavController(getActivity(),R.id.navigationFragment).navigate(R.id.action_mainMenuFragment_to_urunAraFragment);
+            }
+        });
+        depoCikisImage = view.findViewById(R.id.imageView_Cikis);
+        depoCikisImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(getActivity(),R.id.navigationFragment).navigate(R.id.action_mainMenuFragment_to_depoCikisFragment);
             }
         });
 

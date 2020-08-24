@@ -22,4 +22,7 @@
     <string name="m_ktar">MİKTAR:</string>
     <string name="adresi">Adresi:</string>
     <string name="depo_r_n_g_r">DEPO ÜRÜN GİRİŞ</string>
+    <string name="depo_r_n_iki">DEPO ÜRÜN ÇIKIŞ</string>
+    <string name="onayla">Onayla</string>
+    <string name="temizle">Temizle</string>
 </resources>
