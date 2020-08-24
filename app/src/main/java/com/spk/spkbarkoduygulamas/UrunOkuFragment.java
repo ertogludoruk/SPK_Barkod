@@ -107,40 +107,36 @@ public class UrunOkuFragment extends Fragment {
                 String barcode = strings[0];
                 String queryStmt =
                         String.format("SELECT [bar_stokkodu] FROM [BARKOD_TANIMLARI] WHERE [bar_kodu]='%s'", barcode);
-
                 PreparedStatement ps = connect.prepareStatement(queryStmt);
-
                 ResultSet rs = ps.executeQuery();
                 rs.next();
-
                 String stok_kodu= rs.getString("bar_stokkodu");
                 ps.close();
 
                 queryStmt =
                         String.format("SELECT [sto_isim],[sto_cins],[sto_birim1_ad],[sto_birim2_ad],[sto_birim2_katsayi] FROM [MikroDB_V16_V01].[dbo].[STOKLAR] WHERE [sto_kod]='%s'", stok_kodu);
-
                 ps = connect.prepareStatement(queryStmt);
-
                 rs = ps.executeQuery();
                 rs.next();
+
                 String urunadi = rs.getString("sto_isim");
                 urunadi = urunadi.trim().replaceAll(" +", " ");
                 urunadi = urunadi.substring(1, urunadi.length()-1);
                 String birim = rs.getString("sto_birim1_ad");
                 Integer cins = rs.getInt("sto_cins");
                 Integer ambalajIciAdeti = Math.abs(rs.getInt("sto_birim2_katsayi")) ;
-
                 ps.close();
+
                 queryStmt =
                         String.format("SELECT [sto_isim],[sto_cins],[sto_birim1_ad],[sto_birim2_ad],[sto_birim2_katsayi] FROM [MikroDB_V16_V01].[dbo].[STOKLAR] WHERE [sto_kod]='%s'", stok_kodu);
                 ps = connect.prepareStatement(queryStmt);
-
                 rs = ps.executeQuery();
                 rs.next();
-                ps.close()
-                ;
+                ps.close();
+
                 Urun okunanUrun = new Urun(barcode,urunadi,cins,birim,stok_kodu,ambalajIciAdeti);
                 isSuccess = true;
+
                 return okunanUrun;
             } catch (SQLException e) {
                 String hata = e.getSQLState();
