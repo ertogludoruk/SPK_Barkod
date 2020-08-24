@@ -174,7 +174,7 @@ public class DepoGirisFragment extends Fragment {
                 ResultSet rs = ps.executeQuery();
                 rs.next();
 
-                String stok_kodu= rs.getString("bar_stokkodu");
+            String stok_kodu= rs.getString("bar_stokkodu");
                 ps.close();
 
                 queryStmt =
@@ -227,9 +227,6 @@ public class DepoGirisFragment extends Fragment {
                 tvStokBarkod.setText(s.getBarkod());
                 tvStokKodu.setText(s.getStokKodu());
                 tvStokAdi.setText(s.getIsim());
-                tvStokCinsi.setText(s.getCins().toString() );
-                tvStokBirimi.setText(s.getBirim1());
-                tvAmbAdet.setText(s.getAmbalajAdeti().toString() );
             }
             editText_girilen_miktar.requestFocus();
             editText_girilen_miktar.setEnabled(true);
@@ -239,9 +236,6 @@ public class DepoGirisFragment extends Fragment {
         tvStokBarkod.setText("");
         tvStokKodu.setText("");
         tvStokAdi.setText("");
-        tvStokCinsi.setText("");
-        tvStokBirimi.setText("");
-        tvAmbAdet.setText("");
         editText_girilen_miktar.setText("");
         textView_adres.setText("");
     }
