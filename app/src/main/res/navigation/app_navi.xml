@@ -60,5 +60,6 @@
     <fragment
         android:id="@+id/depoCikisFragment"
         android:name="com.spk.spkbarkoduygulamas.DepoCikisFragment"
-        android:label="DepoCikisFragment" />
+        android:label="DepoCikisFragment"
+        tools:layout="@layout/fragment_depo_cikis"/>
 </navigation>

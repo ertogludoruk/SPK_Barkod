@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,12 +43,32 @@ public class UrunAraFragment extends Fragment {
     public UrunAraFragment(){
     }
 
+    public void myOnKeyDown(int key_code){
+        if(key_code == KeyEvent.KEYCODE_3) {
+            String text = edit_text.getText().toString();
+            List<String> list;
+            if(spinner.getSelectedItem().toString().equals("ADRES")){
+                list = refreshListAdres(text, "Yer_Adi");
+            }
+            else if(spinner.getSelectedItem().toString().equals("STOK KODU")){
+                list = refreshList(text, "bar_stokkodu");
+            }
+            else{
+                list = refreshList(text, "bar_kodu");
+            }
+            ArrayAdapter<String> adapter =new ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, list);
+            edit_text.setAdapter(adapter);
+        }
+    }
+
     public static UrunAraFragment newInstance(){
         return new UrunAraFragment();
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); }
+    public void onCreate(Bundle savedInstanceState) {
+        MainActivity.activeFragment = this;
+        super.onCreate(savedInstanceState); }
 
     public List<String> refreshList(String text, String column){
         List<String> list = new LinkedList<String>();
@@ -119,33 +140,6 @@ public class UrunAraFragment extends Fragment {
         String[] items = new String[]{"ADRES", "STOK KODU", "BARKOD"};
         ArrayAdapter<String> adp = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, items);
         spinner.setAdapter(adp);
-
-        edit_text.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String text = edit_text.getText().toString();
-                List<String> list;
-                if(spinner.getSelectedItem().toString().equals("ADRES")){
-                    list = refreshListAdres(text, "Yer_Adi");
-                }
-                else if(spinner.getSelectedItem().toString().equals("STOK KODU")){
-                    list = refreshList(text, "bar_stokkodu");
-                }
-                else{
-                    list = refreshList(text, "bar_kodu");
-                }
-                ArrayAdapter<String> adapter =new ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, list);
-                edit_text.setAdapter(adapter);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
 
         buttonAra.setOnClickListener(new View.OnClickListener() {
             @Override

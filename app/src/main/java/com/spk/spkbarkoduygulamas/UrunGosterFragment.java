@@ -52,10 +52,10 @@ public class UrunGosterFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        MainActivity.activeFragment = this;
         super.onCreate(savedInstanceState);
     }
 
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_urun_goster, container, false);
@@ -96,13 +96,6 @@ public class UrunGosterFragment extends Fragment {
                 Integer ambalajIciAdeti = Math.abs(rs.getInt("sto_birim2_katsayi")) ;
                 ps.close();
 
-                queryStmt =
-                        String.format("SELECT [sto_isim],[sto_cins],[sto_birim1_ad],[sto_birim2_ad],[sto_birim2_katsayi] FROM [MikroDB_V16_V01].[dbo].[STOKLAR] WHERE [sto_kod]='%s'", stok_kodu);
-                ps = connect.prepareStatement(queryStmt);
-                rs = ps.executeQuery();
-                rs.next();
-                ps.close();
-
                 connect = DBManager.CONN_MSSql_DB("DEPO_DB","depo_us","depo2020","192.168.1.249");
                 queryStmt = String.format("SELECT [Girilen_Miktar], [Giris_Tarihi], [Girilen_Adres] FROM [DEPO_DB].[dbo].[GirisHareketleri] WHERE [Urun_Kodu]='%s'", stok_kodu);
                 ps = connect.prepareStatement(queryStmt);
@@ -111,9 +104,10 @@ public class UrunGosterFragment extends Fragment {
                 List<String> tempList = new LinkedList<String>();
 
                 while(rs.next()){
-                    DepoUrun depoUrun = new DepoUrun(stok_kodu, rs.getInt("Girilen_Miktar"),
-                            rs.getString("Girilen_Adres"), rs.getDate("Giris_Tarihi"));
-                    tempList.add(depoUrun.printUrun());
+                    //DepoUrun depoUrun = new DepoUrun(stok_kodu, rs.getInt("Girilen_Miktar"),
+                            //rs.getString("Girilen_Adres"), rs.getTimestamp("Giris_Tarihi"));
+
+                   // tempList.add(depoUrun.printUrun());
                 }
                 ps.close();
 
@@ -170,13 +164,6 @@ public class UrunGosterFragment extends Fragment {
                 Integer ambalajIciAdeti = Math.abs(rs.getInt("sto_birim2_katsayi")) ;
                 ps.close();
 
-                queryStmt =
-                        String.format("SELECT [sto_isim],[sto_cins],[sto_birim1_ad],[sto_birim2_ad],[sto_birim2_katsayi] FROM [MikroDB_V16_V01].[dbo].[STOKLAR] WHERE [sto_kod]='%s'", text);
-                ps = connect.prepareStatement(queryStmt);
-                rs = ps.executeQuery();
-                rs.next();
-                ps.close();
-
                 connect = DBManager.CONN_MSSql_DB("DEPO_DB", "depo_us", "depo2020", "192.168.1.249");
                 queryStmt = String.format("SELECT [Girilen_Miktar], [Giris_Tarihi], [Girilen_Adres] FROM [DEPO_DB].[dbo].[GirisHareketleri] WHERE [Urun_Kodu]='%s'", text);
                 ps = connect.prepareStatement(queryStmt);
@@ -185,9 +172,9 @@ public class UrunGosterFragment extends Fragment {
                 List<String> tempList = new LinkedList<String>();
 
                 while(rs.next()){
-                    DepoUrun depoUrun = new DepoUrun(text, rs.getInt("Girilen_Miktar"),
-                            rs.getString("Girilen_Adres"), rs.getDate("Giris_Tarihi"));
-                    tempList.add(depoUrun.printUrun());
+                    //DepoUrun depoUrun = new DepoUrun(text, rs.getInt("Girilen_Miktar"),
+                            //rs.getString("Girilen_Adres"), rs.getDate("Giris_Tarihi"));
+                    //tempList.add(depoUrun.printUrun());
                 }
                 ps.close();
 
