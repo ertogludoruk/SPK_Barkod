@@ -52,7 +52,6 @@ public class UrunGosterFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        MainActivity.activeFragment = this;
         super.onCreate(savedInstanceState);
     }
 
@@ -104,10 +103,13 @@ public class UrunGosterFragment extends Fragment {
                 List<String> tempList = new LinkedList<String>();
 
                 while(rs.next()){
-                    //DepoUrun depoUrun = new DepoUrun(stok_kodu, rs.getInt("Girilen_Miktar"),
-                            //rs.getString("Girilen_Adres"), rs.getTimestamp("Giris_Tarihi"));
+                    DepoUrun depoUrun = new DepoUrun();
+                    depoUrun.setStokKodu(stok_kodu);
+                    depoUrun.setMiktar(rs.getInt("Girilen_Miktar"));
+                    depoUrun.setAdres("Girilen_Adres");
+                    depoUrun.setTarih(rs.getTimestamp("Giris_Tarihi"));
 
-                   // tempList.add(depoUrun.printUrun());
+                    tempList.add(depoUrun.printUrun());
                 }
                 ps.close();
 
@@ -140,69 +142,7 @@ public class UrunGosterFragment extends Fragment {
             }
         }
         else if(spinnerValue.equals("bar_stokkodu")){
-            String text = data;
-            try {
-                Connection connect = DBManager.CONN_MSSql_DB("MikroDB_V16_V01","mikros","mikro","192.168.1.249");
-                String queryStmt =
-                        String.format("SELECT [bar_kodu] FROM [BARKOD_TANIMLARI] WHERE [bar_stokkodu]='%s'", text);
-                PreparedStatement ps = connect.prepareStatement(queryStmt);
-                ResultSet rs = ps.executeQuery();
-                rs.next();
-                String bar_kodu= rs.getString("bar_kodu");
-                ps.close();
 
-                queryStmt =
-                        String.format("SELECT [sto_isim],[sto_cins],[sto_birim1_ad],[sto_birim2_ad],[sto_birim2_katsayi] FROM [MikroDB_V16_V01].[dbo].[STOKLAR] WHERE [sto_kod]='%s'", text);
-                ps = connect.prepareStatement(queryStmt);
-                rs = ps.executeQuery();
-                rs.next();
-                String urunadi = rs.getString("sto_isim");
-                urunadi = urunadi.trim().replaceAll(" +", " ");
-                urunadi = urunadi.substring(1, urunadi.length()-1);
-                String birim = rs.getString("sto_birim1_ad");
-                Integer cins = rs.getInt("sto_cins");
-                Integer ambalajIciAdeti = Math.abs(rs.getInt("sto_birim2_katsayi")) ;
-                ps.close();
-
-                connect = DBManager.CONN_MSSql_DB("DEPO_DB", "depo_us", "depo2020", "192.168.1.249");
-                queryStmt = String.format("SELECT [Girilen_Miktar], [Giris_Tarihi], [Girilen_Adres] FROM [DEPO_DB].[dbo].[GirisHareketleri] WHERE [Urun_Kodu]='%s'", text);
-                ps = connect.prepareStatement(queryStmt);
-                rs = ps.executeQuery();
-
-                List<String> tempList = new LinkedList<String>();
-
-                while(rs.next()){
-                    //DepoUrun depoUrun = new DepoUrun(text, rs.getInt("Girilen_Miktar"),
-                            //rs.getString("Girilen_Adres"), rs.getDate("Giris_Tarihi"));
-                    //tempList.add(depoUrun.printUrun());
-                }
-                ps.close();
-
-                Urun okunanUrun = new Urun(bar_kodu,urunadi,cins,birim,text,ambalajIciAdeti);
-                Toast.makeText(context, "ÜRÜN BULUNDU", Toast.LENGTH_SHORT).show();
-                tvBarkod.setText(okunanUrun.getBarkod());
-                tvStokkodu.setText(okunanUrun.getStokKodu());
-                tvAdi.setText(okunanUrun.getIsim());
-
-                ArrayAdapter<String> listAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, tempList);
-                listview.setAdapter(listAdapter);
-
-                popUp.setVisibility(View.VISIBLE);
-            } catch (SQLException e) {
-                String hata = e.getSQLState();
-                if(hata.equals("24000")){
-                    Toast.makeText(context, "Stokta Ürün Kayıtlı Değil", Toast.LENGTH_SHORT).show();
-                }
-                else if(hata.equals("08S01")){
-                    Toast.makeText(context, "Cihazın Bağlantısını Kontrol Edin", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    Toast.makeText(context, "Veritabanı Hatası, Uygulama Güncellenmeli", Toast.LENGTH_SHORT).show();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                Throwable za = e.getCause();
-            }
         }
         else{
 

@@ -2,6 +2,7 @@ package com.spk.spkbarkoduygulamas;
 
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -34,6 +35,8 @@ public class DepoGirisFragment extends Fragment {
     TextView tvStokBarkod;
     TextView tvStokKodu;
     TextView tvStokAdi;
+    TextView tvLot;
+    int marker;
 
     DepoUrun okunmusUrun;
 
@@ -65,12 +68,28 @@ public class DepoGirisFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         okunmusUrun = new DepoUrun();
-        MainActivity.activeFragment = this;
     }
 
     public void myOnKeyDown(int key_code){
-        if(7 < key_code && key_code < 16 ) {
-            tvAdet.setText(tvAdet.getText().toString() + (key_code - 7));
+        if(7 <= key_code && key_code <= 16 ) {
+            if(marker==0){
+                tvAdet.setText(tvAdet.getText().toString() + (key_code - 7));
+            }
+            else if(marker==1){
+                tvLot.setText(tvLot.getText().toString() + (key_code - 7));
+            }
+        }
+    }
+
+    private void alanSec(int alan){
+        marker = alan;
+        if(alan == 0){
+            tvAdet.setBackgroundColor(Color.parseColor("#00000000"));
+            tvLot.setBackground(getResources().getDrawable(R.color.black_overlay));
+        }
+        else if(alan ==1){
+            tvAdet.setBackground(getResources().getDrawable(R.color.black_overlay));
+            tvLot.setBackgroundColor(Color.parseColor("#00000000"));
         }
     }
 
@@ -88,6 +107,7 @@ public class DepoGirisFragment extends Fragment {
         tvEvet = view.findViewById(R.id.textViewEvet);
         tvHayir = view.findViewById(R.id.textViewHayir);
         tvAdet = view.findViewById(R.id.textViewAdet);
+        tvLot = view.findViewById(R.id.textViewLot);
         tvAdres = view.findViewById(R.id.textViewAdres);
 
 
@@ -107,8 +127,10 @@ public class DepoGirisFragment extends Fragment {
 
                 try{
                     Integer miktar = Integer.parseInt(tvAdet.getText().toString());
+                    Integer lot = Integer.parseInt(tvLot.getText().toString());
                     if(miktar > 0){
                         okunmusUrun.setMiktar(miktar);
+                        okunmusUrun.setLot(lot);
                     }
                 }
                 catch (Exception e){
@@ -172,6 +194,21 @@ public class DepoGirisFragment extends Fragment {
             }
         });
 
+        tvAdet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alanSec(0);
+            }
+        });
+
+        tvLot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alanSec(1);
+            }
+        });
+
+        alanSec(0);
         return view;
     }
     private class ReadBarcode1 extends AsyncTask<String, String, DepoUrun>{
@@ -249,6 +286,7 @@ public class DepoGirisFragment extends Fragment {
         tvStokAdi.setText("");
         tvAdet.setText("");
         tvAdres.setText("");
+        tvLot.setText("");
         okunmusUrun = new DepoUrun();
     }
 }

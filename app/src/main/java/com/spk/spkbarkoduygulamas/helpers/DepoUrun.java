@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 public class DepoUrun{
     private String StokKodu;
     private Integer Miktar;
+    private Integer Lot;
     private String Adres;
     private Timestamp Tarih;
     private String BarkodNo;
@@ -70,5 +71,13 @@ public class DepoUrun{
 
     public void setUrunAdi(String urunAdi) {
         UrunAdi = urunAdi;
+    }
+
+    public Integer getLot() {
+        return Lot;
+    }
+
+    public void setLot(Integer lot) {
+        Lot = lot;
     }
 }

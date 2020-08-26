@@ -1,5 +1,6 @@
 package com.spk.spkbarkoduygulamas;
 
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
@@ -27,6 +28,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
+
+import static android.content.Context.CLIPBOARD_SERVICE;
 
 public class UrunAraFragment extends Fragment {
     AutoCompleteTextView edit_text;
@@ -41,24 +45,6 @@ public class UrunAraFragment extends Fragment {
     }
 
     public UrunAraFragment(){
-    }
-
-    public void myOnKeyDown(int key_code){
-        if(key_code == KeyEvent.KEYCODE_3) {
-            String text = edit_text.getText().toString();
-            List<String> list;
-            if(spinner.getSelectedItem().toString().equals("ADRES")){
-                list = refreshListAdres(text, "Yer_Adi");
-            }
-            else if(spinner.getSelectedItem().toString().equals("STOK KODU")){
-                list = refreshList(text, "bar_stokkodu");
-            }
-            else{
-                list = refreshList(text, "bar_kodu");
-            }
-            ArrayAdapter<String> adapter =new ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, list);
-            edit_text.setAdapter(adapter);
-        }
     }
 
     public static UrunAraFragment newInstance(){
@@ -137,9 +123,50 @@ public class UrunAraFragment extends Fragment {
         buttonAra = view.findViewById(R.id.buttonAra);
 
         spinner = view.findViewById(R.id.spinner);
-        String[] items = new String[]{"ADRES", "STOK KODU", "BARKOD"};
+        String[] items = new String[]{"STOK KODU","ADRES","BARKOD"};
         ArrayAdapter<String> adp = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, items);
         spinner.setAdapter(adp);
+
+
+        edit_text.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(count > before){
+                    if(s.charAt(start) == '*' ){
+
+                        String text = edit_text.getText().toString();
+                        text = text.substring(0, text.length() - 1);
+
+                        List<String> list;
+                        if(spinner.getSelectedItem().toString().equals("ADRES")){
+                            list = refreshListAdres(text, "Yer_Adi");
+                        }
+                        else if(spinner.getSelectedItem().toString().equals("STOK KODU")){
+                            list = refreshList(text, "bar_stokkodu");
+                        }
+                        else{
+                            list = refreshList(text, "bar_kodu");
+                        }
+                        ArrayAdapter<String> adapter =new ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, list);
+                        MainActivity.hideKeyboard(getActivity());
+                        edit_text.setText(text);
+                        edit_text.setAdapter(adapter);
+                        edit_text.setSelection(edit_text.getText().length());
+
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         buttonAra.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,6 +184,23 @@ public class UrunAraFragment extends Fragment {
             }
         });
 
+        final ClipboardManager clipboard = (ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE);
+        clipboard.addPrimaryClipChangedListener(new ClipboardManager.OnPrimaryClipChangedListener() {
+            @Override
+            public void onPrimaryClipChanged() {
+                String barcode = Objects.requireNonNull(clipboard.getPrimaryClip()).getItemAt(0).coerceToText(context).toString();
+                if(barcode.contains("DEPO_")){
+                    String depoAdi = barcode.substring(5);
+                    spinner.setSelection(2);
+                }
+                else{
+                    spinner.setSelection(1);
+                }
+                edit_text.setText("");
+            }
+        });
+
         return view;
     }
+
 }

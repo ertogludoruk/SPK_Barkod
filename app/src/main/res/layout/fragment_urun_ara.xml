@@ -18,7 +18,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.32">
+        app:layout_constraintVertical_bias="0.25">
 
         <LinearLayout
             android:id="@+id/linear1"
@@ -34,8 +34,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:dropDownWidth="wrap_content"
-                android:spinnerMode="dropdown"
-                android:gravity="left" />
+                android:gravity="left"
+                android:spinnerMode="dropdown" />
 
             <AutoCompleteTextView
                 android:id="@+id/editTextBarkod"
