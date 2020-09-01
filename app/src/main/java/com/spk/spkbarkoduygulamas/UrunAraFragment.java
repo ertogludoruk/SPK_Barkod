@@ -90,7 +90,7 @@ public class UrunAraFragment extends Fragment {
         try{
             Connection connect = DBManager.CONN_MSSql_DB("DEPO_DB","depo_us","depo2020","192.168.1.249");
             String queryStmt =
-                    "SELECT * FROM [DepoYerleri] WHERE ["+ column +"] LIKE '"+ text + "%'";
+                    "SELECT * FROM [DepoYerleri] WHERE [sto_kod] LIKE '"+ text + "%'";
             PreparedStatement ps = connect.prepareStatement(queryStmt);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {

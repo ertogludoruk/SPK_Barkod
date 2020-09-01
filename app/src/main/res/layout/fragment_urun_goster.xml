@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -21,7 +22,7 @@
         <LinearLayout
             android:id="@+id/popUp"
             android:layout_width="match_parent"
-            android:layout_height="95dp"
+            android:layout_height="wrap_content"
             android:background="@drawable/shape"
             android:divider="?dividerHorizontal"
             android:orientation="vertical"
@@ -83,40 +84,12 @@
                     android:textColor="#000000" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:divider="?dividerHorizontal"
-                android:orientation="horizontal"
-                android:showDividers="middle">
-
-                <TextView
-                    android:id="@+id/textView121"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.25"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="10dp"
-                    android:text="@string/barkod"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/textViewBarkod"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.75"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textColor="#000000" />
-
-            </LinearLayout>
-
         </LinearLayout>
 
         <ListView
             android:id="@+id/listview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            tools:listitem="@layout/list_view_haraket" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

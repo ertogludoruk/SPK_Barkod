@@ -2,19 +2,13 @@ package com.spk.spkbarkoduygulamas;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.app.Activity;
-import android.content.ClipboardManager;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.TextView;
-
-import com.spk.spkbarkoduygulamas.helpers.DBManager;
 
 /* CREATED BY Doruk Ertoğlu and
  Tuğkan Söğüt 2020 */
@@ -34,7 +28,10 @@ public class MainActivity extends AppCompatActivity {
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.navigationFragment);
         Fragment fragment = navHostFragment.getChildFragmentManager().getFragments().get(0);
-        if(fragment instanceof DepoGirisFragment){
+        if(fragment instanceof DepoCikisFragment){
+            ((DepoCikisFragment)fragment).myOnKeyDown(keyCode);
+        }
+        else if(fragment instanceof DepoGirisFragment){
             ((DepoGirisFragment)fragment).myOnKeyDown(keyCode);
         }
 

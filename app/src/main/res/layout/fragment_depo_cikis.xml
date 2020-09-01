@@ -183,7 +183,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="20dp"
-            android:orientation="horizontal" />
+            android:orientation="horizontal"></LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -218,7 +218,7 @@
             android:layout_height="20dp" />
 
         <LinearLayout
-            android:layout_width="220dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@drawable/back_blue"
             android:divider="?dividerHorizontal"
@@ -234,21 +234,52 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textSize="20sp" />
 
-            <EditText
-                android:id="@+id/editTextGirelenAdet"
+            <TextView
+                android:layout_margin="5dp"
+                android:id="@+id/textViewAdet"
                 android:layout_width="80dp"
                 android:layout_height="match_parent"
-                android:background="@android:color/transparent"
-                android:cursorVisible="false"
-                android:ems="10"
-                android:focusableInTouchMode="true"
-                android:inputType="numberDecimal"
-                android:textAlignment="center"
-                android:textStyle="bold" />
+                android:layout_weight="1"
+                android:background="@color/black_overlay"
+                android:gravity="center_horizontal|center_vertical"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textSize="20sp" />
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/back_green"
+            android:divider="?dividerHorizontal"
+            android:orientation="horizontal"
+            android:showDividers="middle">
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="140dp"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="@string/lot_g_r"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_margin="5dp"
+                android:id="@+id/textViewLot"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/black_overlay"
+                android:gravity="center_horizontal|center_vertical"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textSize="20sp" />
+
+        </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -284,7 +315,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginBottom="4dp"
-                android:text="@string/temizle"
+                android:text="Temizle"
                 app:layout_constraintBottom_toTopOf="@+id/imageViewTemizle"
                 app:layout_constraintStart_toStartOf="@+id/imageViewTemizle" />
 
@@ -294,7 +325,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginBottom="4dp"
-                android:text="@string/onayla"
+                android:text="Onayla"
                 app:layout_constraintBottom_toTopOf="@+id/imageViewOnayla"
                 app:layout_constraintStart_toStartOf="@+id/imageViewOnayla" />
 

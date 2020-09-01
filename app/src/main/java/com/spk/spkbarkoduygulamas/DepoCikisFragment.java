@@ -2,17 +2,16 @@ package com.spk.spkbarkoduygulamas;
 
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -34,6 +33,8 @@ public class DepoCikisFragment extends Fragment {
     TextView tvStokBarkod;
     TextView tvStokKodu;
     TextView tvStokAdi;
+    TextView tvLot;
+    int marker;
 
     DepoUrun okunmusUrun;
 
@@ -56,8 +57,8 @@ public class DepoCikisFragment extends Fragment {
     public DepoCikisFragment() {
     }
 
-    public static DepoGirisFragment newInstance() {
-        DepoGirisFragment fragment = new DepoGirisFragment();
+    public static DepoCikisFragment newInstance() {
+        DepoCikisFragment fragment = new DepoCikisFragment();
         return fragment;
     }
 
@@ -68,8 +69,25 @@ public class DepoCikisFragment extends Fragment {
     }
 
     public void myOnKeyDown(int key_code){
-        if(7 < key_code && key_code < 16 ) {
-            tvAdet.setText(tvAdet.getText().toString() + (key_code - 7));
+        if(7 <= key_code && key_code <= 16 ) {
+            if(marker==0){
+                tvAdet.setText(tvAdet.getText().toString() + (key_code - 7));
+            }
+            else if(marker==1){
+                tvLot.setText(tvLot.getText().toString() + (key_code - 7));
+            }
+        }
+    }
+
+    private void alanSec(int alan){
+        marker = alan;
+        if(alan == 0){
+            tvAdet.setBackgroundColor(Color.parseColor("#00000000"));
+            tvLot.setBackground(getResources().getDrawable(R.color.black_overlay));
+        }
+        else if(alan ==1){
+            tvAdet.setBackground(getResources().getDrawable(R.color.black_overlay));
+            tvLot.setBackgroundColor(Color.parseColor("#00000000"));
         }
     }
 
@@ -87,7 +105,11 @@ public class DepoCikisFragment extends Fragment {
         tvEvet = view.findViewById(R.id.textViewEvet);
         tvHayir = view.findViewById(R.id.textViewHayir);
         tvAdet = view.findViewById(R.id.textViewAdet);
+        tvLot = view.findViewById(R.id.textViewLot);
         tvAdres = view.findViewById(R.id.textViewAdres);
+
+
+
 
 
         ivTemizle.setOnClickListener(new View.OnClickListener() {
@@ -103,8 +125,10 @@ public class DepoCikisFragment extends Fragment {
 
                 try{
                     Integer miktar = Integer.parseInt(tvAdet.getText().toString());
-                    if(miktar > 0){
+                    Integer lot = Integer.parseInt(tvLot.getText().toString());
+                    if(miktar > 0 && lot > 0){
                         okunmusUrun.setMiktar(miktar);
+                        okunmusUrun.setLot(lot);
                     }
                 }
                 catch (Exception e){
@@ -128,8 +152,9 @@ public class DepoCikisFragment extends Fragment {
                         public void onClick(View v) {
                             try {
                                 Connection connect = DBManager.CONN_MSSql_DB("DEPO_DB","depo_us","depo2020","192.168.1.249");
-                                String queryStmt = String.format("INSERT INTO [DEPO_DB].[dbo].[GirisHareketleri] (Urun_Kodu, Girilen_Miktar, Giris_Tarihi, Girilen_Adres) VALUES ('%s','%d',CURRENT_TIMESTAMP,'%s')",
-                                        okunmusUrun.getStokKodu(),okunmusUrun.getMiktar(),okunmusUrun.getAdres() );
+                                String queryStmt = String.format("INSERT INTO [dbo].[Depo_Haraketleri] (sto_kod,lot_kod,islem_tarihi,adet,adres,islem)" +
+                                                "VALUES ('%s','%d',CURRENT_TIMESTAMP,'%d',(SELECT id from [DEPO_DB].[dbo].[DepoYerleri] WHERE adres_barkodu = '%s'),1 )",
+                                        okunmusUrun.getStokKodu(),okunmusUrun.getLot(),okunmusUrun.getMiktar(),okunmusUrun.getAdres() );
                                 PreparedStatement ps = connect.prepareStatement(queryStmt);
 
                                 ps.executeUpdate();
@@ -159,7 +184,7 @@ public class DepoCikisFragment extends Fragment {
                 if(barcode.contains("DEPO_")){
                     String depoAdi = barcode.substring(5);
                     tvAdres.setText(depoAdi);
-                    okunmusUrun.setAdres(depoAdi);
+                    okunmusUrun.setAdres(barcode);
                 }
                 else{
                     ReadBarcode1 readBarcode = new ReadBarcode1();
@@ -168,6 +193,21 @@ public class DepoCikisFragment extends Fragment {
             }
         });
 
+        tvAdet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alanSec(0);
+            }
+        });
+
+        tvLot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alanSec(1);
+            }
+        });
+
+        alanSec(0);
         return view;
     }
     private class ReadBarcode1 extends AsyncTask<String, String, DepoUrun>{
@@ -245,6 +285,7 @@ public class DepoCikisFragment extends Fragment {
         tvStokAdi.setText("");
         tvAdet.setText("");
         tvAdres.setText("");
+        tvLot.setText("");
         okunmusUrun = new DepoUrun();
     }
 }

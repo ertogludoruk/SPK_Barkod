@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.os.StrictMode;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DBManager {
@@ -16,4 +18,5 @@ public class DBManager {
         String ConnURL = "jdbc:jtds:sqlserver://" + _server + ";databaseName=" + _DB + ";user=" + _user + ";password=" + _pass + ";";
         return DriverManager.getConnection(ConnURL);
     }
+
 }

@@ -9,11 +9,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -128,7 +126,7 @@ public class DepoGirisFragment extends Fragment {
                 try{
                     Integer miktar = Integer.parseInt(tvAdet.getText().toString());
                     Integer lot = Integer.parseInt(tvLot.getText().toString());
-                    if(miktar > 0){
+                    if(miktar > 0 && lot > 0){
                         okunmusUrun.setMiktar(miktar);
                         okunmusUrun.setLot(lot);
                     }
@@ -154,8 +152,9 @@ public class DepoGirisFragment extends Fragment {
                         public void onClick(View v) {
                             try {
                                 Connection connect = DBManager.CONN_MSSql_DB("DEPO_DB","depo_us","depo2020","192.168.1.249");
-                                String queryStmt = String.format("INSERT INTO [DEPO_DB].[dbo].[GirisHareketleri] (Urun_Kodu, Girilen_Miktar, Giris_Tarihi, Girilen_Adres) VALUES ('%s','%d',CURRENT_TIMESTAMP,'%s')",
-                                        okunmusUrun.getStokKodu(),okunmusUrun.getMiktar(),okunmusUrun.getAdres() );
+                                String queryStmt = String.format("INSERT INTO [dbo].[Depo_Haraketleri] (sto_kod,lot_kod,islem_tarihi,adet,adres,islem)" +
+                                                "VALUES ('%s','%d',CURRENT_TIMESTAMP,'%d',(SELECT id from [DEPO_DB].[dbo].[DepoYerleri] WHERE adres_barkodu = '%s'),0 )",
+                                        okunmusUrun.getStokKodu(),okunmusUrun.getLot(),okunmusUrun.getMiktar(),okunmusUrun.getAdres() );
                                 PreparedStatement ps = connect.prepareStatement(queryStmt);
 
                                 ps.executeUpdate();
@@ -185,10 +184,10 @@ public class DepoGirisFragment extends Fragment {
                 if(barcode.contains("DEPO_")){
                     String depoAdi = barcode.substring(5);
                     tvAdres.setText(depoAdi);
-                    okunmusUrun.setAdres(depoAdi);
+                    okunmusUrun.setAdres(barcode);
                 }
                 else{
-                    DepoGirisFragment.ReadBarcode1 readBarcode = new DepoGirisFragment.ReadBarcode1();
+                    ReadBarcode1 readBarcode = new ReadBarcode1();
                     readBarcode.execute(barcode);
                 }
             }
