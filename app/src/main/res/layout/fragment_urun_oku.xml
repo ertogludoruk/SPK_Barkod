@@ -111,7 +111,7 @@
             android:inputType="none"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
-            android:text="@string/c_ns"
+            android:text="@string/cins"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="14sp" />
 
@@ -137,7 +137,7 @@
             android:background="@drawable/back"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
-            android:text="@string/b_r_m"
+            android:text="@string/birim"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="14sp" />
 

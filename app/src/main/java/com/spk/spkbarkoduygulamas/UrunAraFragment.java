@@ -5,8 +5,11 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.ActionMode;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -26,6 +29,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -53,64 +57,41 @@ public class UrunAraFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        MainActivity.activeFragment = this;
         super.onCreate(savedInstanceState); }
 
-    public List<String> refreshList(String text, String column){
-        List<String> list = new LinkedList<String>();
+    public List<String> refreshList(String text){
+        List<String> list = new ArrayList<String>();
         try{
             Connection connect = DBManager.CONN_MSSql_DB("MikroDB_V16_V01","mikros","mikro","192.168.1.249");
             String queryStmt =
-                    "SELECT * FROM [BARKOD_TANIMLARI] WHERE ["+ column +"] LIKE '"+ text + "%'";
+                    "SELECT * FROM [BARKOD_TANIMLARI] WHERE [bar_stokkodu] LIKE '"+ text + "%'";
             PreparedStatement ps = connect.prepareStatement(queryStmt);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                String str = rs.getString(column);
+                String str = rs.getString("bar_stokkodu");
                 list.add(str);
             }
-        } catch (SQLException e) {
-            String hata = e.getSQLState();
-            if(hata.equals("24000")){
-                Toast.makeText(context, "Stokta Ürün Kayıtlı Değil", Toast.LENGTH_SHORT).show();
-            }
-            else if(hata.equals("08S01")){
-                Toast.makeText(context, "Cihazın Bağlantısını Kontrol Edin", Toast.LENGTH_SHORT).show();
-            }
-            else{
-                Toast.makeText(context, "Veritabanı Hatası, Uygulama Güncellenmeli", Toast.LENGTH_SHORT).show();
-            }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
-            Throwable za = e.getCause();
         }
         return list;
     }
-    public List<String> refreshListAdres(String text, String column){
-        List<String> list = new LinkedList<String>();
+    public List<String> refreshListAdres(String text){
+        List<String> list = new ArrayList<>();
         try{
             Connection connect = DBManager.CONN_MSSql_DB("DEPO_DB","depo_us","depo2020","192.168.1.249");
             String queryStmt =
-                    "SELECT * FROM [DepoYerleri] WHERE [sto_kod] LIKE '"+ text + "%'";
+                    "SELECT * FROM [DepoYerleri] WHERE [adres_adi] LIKE '"+ text + "%'";
             PreparedStatement ps = connect.prepareStatement(queryStmt);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                String str = rs.getString(column);
+                String str = rs.getString("adres_adi");
                 list.add(str);
             }
-        } catch (SQLException e) {
-            String hata = e.getSQLState();
-            if(hata.equals("24000")){
-                Toast.makeText(context, "Stokta Ürün Kayıtlı Değil", Toast.LENGTH_SHORT).show();
-            }
-            else if(hata.equals("08S01")){
-                Toast.makeText(context, "Cihazın Bağlantısını Kontrol Edin", Toast.LENGTH_SHORT).show();
-            }
-            else{
-                Toast.makeText(context, "Veritabanı Hatası, Uygulama Güncellenmeli", Toast.LENGTH_SHORT).show();
-            }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
-            Throwable za = e.getCause();
         }
         return list;
     }
@@ -123,10 +104,28 @@ public class UrunAraFragment extends Fragment {
         buttonAra = view.findViewById(R.id.buttonAra);
 
         spinner = view.findViewById(R.id.spinner);
-        String[] items = new String[]{"STOK KODU","ADRES","BARKOD"};
+        String[] items = new String[]{"STOK KODU","ADRES"};
         ArrayAdapter<String> adp = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, items);
         spinner.setAdapter(adp);
 
+
+        edit_text.setCustomSelectionActionModeCallback(new ActionMode.Callback() {
+
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+
+            public void onDestroyActionMode(ActionMode mode) {
+            }
+
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                return false;
+            }
+        });
 
         edit_text.addTextChangedListener(new TextWatcher() {
             @Override
@@ -142,15 +141,12 @@ public class UrunAraFragment extends Fragment {
                         String text = edit_text.getText().toString();
                         text = text.substring(0, text.length() - 1);
 
-                        List<String> list;
+                        List<String> list = new ArrayList<>();
                         if(spinner.getSelectedItem().toString().equals("ADRES")){
-                            list = refreshListAdres(text, "Yer_Adi");
+                            list = refreshListAdres(text);
                         }
                         else if(spinner.getSelectedItem().toString().equals("STOK KODU")){
-                            list = refreshList(text, "bar_stokkodu");
-                        }
-                        else{
-                            list = refreshList(text, "bar_kodu");
+                            list = refreshList(text);
                         }
                         ArrayAdapter<String> adapter =new ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, list);
                         MainActivity.hideKeyboard(getActivity());
@@ -171,10 +167,9 @@ public class UrunAraFragment extends Fragment {
         buttonAra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String sp;
-                if(spinner.getSelectedItem().toString().equals("BARKOD")){sp = "bar_kodu";}
-                else if (spinner.getSelectedItem().toString().equals("STOK KODU")){sp = "bar_stokkodu";}
-                else{sp = "Yer_Adi";}
+                String sp = "none";
+                if(spinner.getSelectedItem().toString().equals("STOK KODU")){sp = "spinner_stokkodu";}
+                else if (spinner.getSelectedItem().toString().equals("ADRES")){sp = "spinner_adres";}
 
                 Bundle bd = new Bundle();
                 bd.putString("key1", edit_text.getText().toString());
@@ -191,12 +186,27 @@ public class UrunAraFragment extends Fragment {
                 String barcode = Objects.requireNonNull(clipboard.getPrimaryClip()).getItemAt(0).coerceToText(context).toString();
                 if(barcode.contains("DEPO_")){
                     String depoAdi = barcode.substring(5);
-                    spinner.setSelection(2);
+                    spinner.setSelection(1);
+                    edit_text.setText(depoAdi);
                 }
                 else{
-                    spinner.setSelection(1);
+                    try{
+                        Connection connect = DBManager.CONN_MSSql_DB("MikroDB_V16_V01","mikros","mikro","192.168.1.249");
+                        String queryStmt =
+                                String.format("SELECT [bar_stokkodu] FROM [BARKOD_TANIMLARI] WHERE [bar_kodu]='%s'", barcode);
+                        PreparedStatement ps = connect.prepareStatement(queryStmt);
+                        ResultSet rs = ps.executeQuery();
+                        rs.next();
+                        String stok_kodu= rs.getString("bar_stokkodu");
+                        ps.close();
+                        spinner.setSelection(0);
+                        edit_text.setText(stok_kodu);
+                    }
+                    catch (Exception e){
+
+                    }
                 }
-                edit_text.setText("");
+
             }
         });
 

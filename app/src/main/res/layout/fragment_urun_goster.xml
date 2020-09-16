@@ -20,7 +20,6 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:id="@+id/popUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/shape"
@@ -82,6 +81,7 @@
                     android:layout_weight="0.75"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textColor="#000000" />
+
             </LinearLayout>
 
         </LinearLayout>
@@ -90,6 +90,10 @@
             android:id="@+id/listview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/list_view_haraket" />
+            tools:listitem="@layout/list_view_haraket">
+
+        </ListView>
+
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

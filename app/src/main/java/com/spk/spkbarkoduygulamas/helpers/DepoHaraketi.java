@@ -2,27 +2,23 @@ package com.spk.spkbarkoduygulamas.helpers;
 
 import java.sql.Timestamp;
 
-public class DepoUrun{
+public class DepoHaraketi {
     private String StokKodu;
     private Integer Miktar;
     private Integer Lot;
+    private String Musteri;
     private String Adres;
     private Timestamp Tarih;
     private String BarkodNo;
     private String UrunAdi;
+    private Haraket haraket;
 
-    public DepoUrun(){
+    public DepoHaraketi(){
     }
 
     public boolean isReady(){
         if(StokKodu != null && Miktar != null && Adres != null  && BarkodNo != null && UrunAdi != null) return true;
         else return false;
-    }
-
-    public String printUrun(){
-        String adr = Adres.replaceAll("\\s+","");
-        String str = "Miktar: " + Miktar + " Adres: " + adr + " Tarih: " + Tarih;
-        return str;
     }
 
     public Integer getMiktar() {
@@ -79,5 +75,21 @@ public class DepoUrun{
 
     public void setLot(Integer lot) {
         Lot = lot;
+    }
+
+    public Haraket getHaraket() {
+        return haraket;
+    }
+
+    public void setHaraket(Haraket haraket) {
+        this.haraket = haraket;
+    }
+
+    public String getMusteri() {
+        return Musteri;
+    }
+
+    public void setMusteri(String musteri) {
+        Musteri = musteri;
     }
 }

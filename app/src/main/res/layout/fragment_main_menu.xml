@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainMenuFragment" >
+    tools:context=".MainMenuFragment">
 
     <ImageView
         android:id="@+id/imageView_Giris"
         android:layout_width="@dimen/menu_button"
         android:layout_height="@dimen/menu_button"
         android:layout_marginStart="60dp"
-        android:layout_marginTop="220dp"
+        android:layout_marginTop="150dp"
         android:src="@drawable/giris_islemi_icon"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -31,6 +31,16 @@
         android:src="@drawable/cikis_islemi_icon"
         app:layout_constraintBottom_toBottomOf="@+id/imageView_Giris"
         app:layout_constraintStart_toEndOf="@+id/imageView_Giris" />
+
+    <ImageView
+        android:id="@+id/imageView_Hesap"
+        android:layout_width="@dimen/menu_button"
+        android:layout_height="@dimen/menu_button"
+        android:layout_marginTop="36dp"
+        android:src="@drawable/hesap_islemi_icon"
+        app:layout_constraintEnd_toEndOf="@+id/imageView_Cikis"
+        app:layout_constraintStart_toStartOf="@+id/imageView_Giris"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_Giris" />
 
     <ImageView
         android:id="@+id/imageView_DepoAra"

@@ -17,4 +17,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/app_navi" />
+
+    <TextView
+        android:id="@+id/textViewHesap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#49000000"
+        android:textColor="#FAFAFA"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Tuğkan Söğüt" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

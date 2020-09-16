@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.spk.spkbarkoduygulamas.helpers.Haraket;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link MainMenuFragment#newInstance} factory method to
@@ -21,6 +23,7 @@ public class MainMenuFragment extends Fragment {
     ImageView depoGirisImage;
     ImageView depoAraImage;
     ImageView depoCikisImage;
+    ImageView hesapGirisImage;
 
 
     public MainMenuFragment() {
@@ -56,7 +59,9 @@ public class MainMenuFragment extends Fragment {
         depoGirisImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(getActivity(),R.id.navigationFragment).navigate(R.id.action_mainMenuFragment_to_depoGirisFragment);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("argGirisCikis",Haraket.GIRIS);
+                Navigation.findNavController(getActivity(),R.id.navigationFragment).navigate(R.id.action_mainMenuFragment_to_depoGirisCikisFragment, bundle);
             }
         });
         depoAraImage = view.findViewById(R.id.imageView_DepoAra);
@@ -70,7 +75,17 @@ public class MainMenuFragment extends Fragment {
         depoCikisImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(getActivity(),R.id.navigationFragment).navigate(R.id.action_mainMenuFragment_to_depoCikisFragment);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("argGirisCikis",Haraket.CIKIS);
+                Navigation.findNavController(getActivity(),R.id.navigationFragment).navigate(R.id.action_mainMenuFragment_to_depoGirisCikisFragment, bundle);
+            }
+        });
+
+        hesapGirisImage = view.findViewById(R.id.imageView_Hesap);
+        hesapGirisImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(getActivity(),R.id.navigationFragment).navigate(R.id.action_mainMenuFragment_to_loginFragment);
             }
         });
 

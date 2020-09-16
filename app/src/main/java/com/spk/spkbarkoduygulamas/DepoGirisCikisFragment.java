@@ -3,12 +3,7 @@ package com.spk.spkbarkoduygulamas;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +12,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import com.spk.spkbarkoduygulamas.helpers.DBManager;
-import com.spk.spkbarkoduygulamas.helpers.DepoUrun;
+import com.spk.spkbarkoduygulamas.helpers.DepoHaraketi;
+import com.spk.spkbarkoduygulamas.helpers.Haraket;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -29,15 +28,18 @@ import java.util.Objects;
 import static android.content.Context.CLIPBOARD_SERVICE;
 
 
-public class DepoCikisFragment extends Fragment {
+public class DepoGirisCikisFragment extends Fragment {
+    Context context;
+    int alanSecili;
+    Haraket haraket;
+
+    DepoHaraketi okunmusUrun;
+
     TextView tvStokBarkod;
     TextView tvStokKodu;
     TextView tvStokAdi;
     TextView tvLot;
-    int marker;
-
-    DepoUrun okunmusUrun;
-
+    TextView tvTitle;
     TextView tvAdet;
     TextView tvAdres;
     ImageView ivTemizle;
@@ -45,8 +47,6 @@ public class DepoCikisFragment extends Fragment {
     TextView tvEvet;
     TextView tvHayir;
     LinearLayout popup;
-    Context context;
-
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -54,47 +54,36 @@ public class DepoCikisFragment extends Fragment {
         super.onAttach(context);
     }
 
-    public DepoCikisFragment() {
+    public DepoGirisCikisFragment() {
     }
 
-    public static DepoCikisFragment newInstance() {
-        DepoCikisFragment fragment = new DepoCikisFragment();
+    public static DepoGirisCikisFragment newInstance() {
+        DepoGirisCikisFragment fragment = new DepoGirisCikisFragment();
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        okunmusUrun = new DepoUrun();
+        okunmusUrun = new DepoHaraketi();
+        haraket =(Haraket) (getArguments().getSerializable("argGirisCikis"));
     }
 
     public void myOnKeyDown(int key_code){
         if(7 <= key_code && key_code <= 16 ) {
-            if(marker==0){
+            if(alanSecili ==0){
                 tvAdet.setText(tvAdet.getText().toString() + (key_code - 7));
             }
-            else if(marker==1){
+            else if(alanSecili ==1){
                 tvLot.setText(tvLot.getText().toString() + (key_code - 7));
             }
-        }
-    }
-
-    private void alanSec(int alan){
-        marker = alan;
-        if(alan == 0){
-            tvAdet.setBackgroundColor(Color.parseColor("#00000000"));
-            tvLot.setBackground(getResources().getDrawable(R.color.black_overlay));
-        }
-        else if(alan ==1){
-            tvAdet.setBackground(getResources().getDrawable(R.color.black_overlay));
-            tvLot.setBackgroundColor(Color.parseColor("#00000000"));
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_depo_cikis, container, false);
+        final View view = inflater.inflate(R.layout.fragment_depo_giriscikis, container, false);
 
         tvStokBarkod = view.findViewById(R.id.textViewBarkod);
         tvStokKodu = view.findViewById(R.id.textViewStokKodu);
@@ -107,10 +96,14 @@ public class DepoCikisFragment extends Fragment {
         tvAdet = view.findViewById(R.id.textViewAdet);
         tvLot = view.findViewById(R.id.textViewLot);
         tvAdres = view.findViewById(R.id.textViewAdres);
+        tvTitle = view.findViewById(R.id.tvDepoTitle);
 
-
-
-
+        if(haraket == Haraket.GIRIS){
+            tvTitle.setText(R.string.depo_title_giris);
+        }
+        else if(haraket == Haraket.CIKIS){
+            tvTitle.setText(R.string.depo_title_cikis);
+        }
 
         ivTemizle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,7 +111,6 @@ public class DepoCikisFragment extends Fragment {
                 ClearInputsUI();
             }
         });
-
         ivOnayla.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,19 +143,27 @@ public class DepoCikisFragment extends Fragment {
                         @Override
                         public void onClick(View v) {
                             try {
+                                Integer secim = 0;
+                                if(haraket == Haraket.GIRIS){
+                                    secim = 0;
+                                }
+                                else if(haraket == Haraket.CIKIS){
+                                    secim = 1;
+                                }
+
                                 Connection connect = DBManager.CONN_MSSql_DB("DEPO_DB","depo_us","depo2020","192.168.1.249");
-                                String queryStmt = String.format("INSERT INTO [dbo].[Depo_Haraketleri] (sto_kod,lot_kod,islem_tarihi,adet,adres,islem)" +
-                                                "VALUES ('%s','%d',CURRENT_TIMESTAMP,'%d',(SELECT id from [DEPO_DB].[dbo].[DepoYerleri] WHERE adres_barkodu = '%s'),1 )",
-                                        okunmusUrun.getStokKodu(),okunmusUrun.getLot(),okunmusUrun.getMiktar(),okunmusUrun.getAdres() );
+                                String queryStmt = String.format("INSERT INTO [dbo].[Depo_Haraketleri] (sto_kod,lot_kod,islem_tarihi,adet,adres,islem,operator)" +
+                                                "VALUES ('%s','%d',CURRENT_TIMESTAMP,'%d',(SELECT id from [DEPO_DB].[dbo].[DepoYerleri] WHERE adres_barkodu = '%s'),%d,%d )",
+                                        okunmusUrun.getStokKodu(),okunmusUrun.getLot(),okunmusUrun.getMiktar(),okunmusUrun.getAdres(), secim,MainActivity.giriliHesap.getId());
                                 PreparedStatement ps = connect.prepareStatement(queryStmt);
 
                                 ps.executeUpdate();
-                                Toast.makeText(context, "STOK EKLENDİ", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "İşlem Yapıldı", Toast.LENGTH_SHORT).show();
                                 ivTemizle.setEnabled(true);
                                 ivOnayla.setEnabled(true);
                                 popup.setVisibility(View.INVISIBLE);
                                 ClearInputsUI();
-                            } catch (SQLException | ClassNotFoundException e) {
+                            } catch (Exception e) {
                                 e.printStackTrace();
                                 Toast.makeText(context, "HATA", Toast.LENGTH_SHORT).show();
                             }
@@ -181,14 +181,54 @@ public class DepoCikisFragment extends Fragment {
             @Override
             public void onPrimaryClipChanged() {
                 String barcode = Objects.requireNonNull(clipboard.getPrimaryClip()).getItemAt(0).coerceToText(context).toString();
-                if(barcode.contains("DEPO_")){
+                if (barcode.contains("DEPO_")) {
                     String depoAdi = barcode.substring(5);
                     tvAdres.setText(depoAdi);
                     okunmusUrun.setAdres(barcode);
-                }
-                else{
-                    ReadBarcode1 readBarcode = new ReadBarcode1();
-                    readBarcode.execute(barcode);
+                } else {
+                    try {
+                        Connection connect = DBManager.CONN_MSSql_DB("MikroDB_V16_V01", "mikros", "mikro", "192.168.1.249");
+                        String queryStmt =
+                                String.format("SELECT [bar_stokkodu] FROM [BARKOD_TANIMLARI] WHERE [bar_kodu]='%s'", barcode);
+                        PreparedStatement ps = connect.prepareStatement(queryStmt);
+                        ResultSet rs = ps.executeQuery();
+                        rs.next();
+
+                        String stok_kodu = rs.getString("bar_stokkodu");
+                        ps.close();
+                        queryStmt =
+                                String.format("SELECT [sto_isim] FROM [STOKLAR] WHERE [sto_kod]='%s'", stok_kodu);
+                        ps = connect.prepareStatement(queryStmt);
+                        rs = ps.executeQuery();
+                        rs.next();
+
+                        String urunadi = rs.getString("sto_isim");
+                        urunadi = urunadi.trim().replaceAll(" +", " ");
+                        urunadi = urunadi.substring(1, urunadi.length() - 1);
+                        ps.close();
+
+                        tvStokBarkod.setText(barcode);
+                        tvStokKodu.setText(stok_kodu);
+                        tvStokAdi.setText(urunadi);
+                        okunmusUrun.setBarkodNo(barcode);
+                        okunmusUrun.setStokKodu(stok_kodu);
+                        okunmusUrun.setUrunAdi(urunadi);
+                    }
+
+                    catch (SQLException e) {
+                        String hata = e.getSQLState();
+                        if (hata.equals("24000")) {
+                            Toast.makeText(context, "Stokta Ürün Kayıtlı Değil", Toast.LENGTH_SHORT).show();
+                        } else if (hata.equals("08S01")) {
+                            Toast.makeText(context, "Cihazın Bağlantısını Kontrol Edin", Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Toast.makeText(context, "Veritabanı Hatası: "+hata, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    catch (ClassNotFoundException e){
+                        Toast.makeText(context, "Hata Kodu: "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -210,75 +250,6 @@ public class DepoCikisFragment extends Fragment {
         alanSec(0);
         return view;
     }
-    private class ReadBarcode1 extends AsyncTask<String, String, DepoUrun>{
-        @Override
-        protected void onPreExecute() {
-        }
-
-        @Override
-        protected DepoUrun doInBackground(String... strings) {
-
-            try {
-                Connection connect = DBManager.CONN_MSSql_DB("MikroDB_V16_V01","mikros","mikro","192.168.1.249");
-                String barcode = strings[0];
-                String queryStmt =
-                        String.format("SELECT [bar_stokkodu] FROM [BARKOD_TANIMLARI] WHERE [bar_kodu]='%s'", barcode);
-                PreparedStatement ps = connect.prepareStatement(queryStmt);
-                ResultSet rs = ps.executeQuery();
-                rs.next();
-
-                String stok_kodu= rs.getString("bar_stokkodu");
-                ps.close();
-                queryStmt =
-                        String.format("SELECT [sto_isim] FROM [STOKLAR] WHERE [sto_kod]='%s'", stok_kodu);
-                ps = connect.prepareStatement(queryStmt);
-                rs = ps.executeQuery();
-                rs.next();
-
-                String urunadi = rs.getString("sto_isim");
-                urunadi = urunadi.trim().replaceAll(" +", " ");
-                urunadi = urunadi.substring(1, urunadi.length()-1);
-                ps.close();
-
-                DepoUrun okunanUrun = new DepoUrun();
-                okunanUrun.setBarkodNo(barcode);
-                okunanUrun.setStokKodu(stok_kodu);
-                okunanUrun.setUrunAdi(urunadi);
-
-                publishProgress("STOK OKUNDU");
-
-                return okunanUrun;
-            } catch (SQLException e) {
-                String hata = e.getSQLState();
-                if((hata.equals("24000")) & (strings[0].contains("DEPO_"))){
-                    publishProgress("Stokta Ürün Kayıtlı Değil");
-                }
-                else if(hata.equals("08S01")){
-                    publishProgress("Cihazın Bağlantısını Kontrol Edin");
-                }
-                else{
-                    publishProgress("Veritabanı Hatası, Uygulama Güncellenmeli");
-                }
-
-                return null;
-            } catch (Exception e) {
-                publishProgress("Hata Kodu: "+e.getLocalizedMessage());
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(DepoUrun s) {
-            if(s != null ){
-                tvStokBarkod.setText(s.getBarkodNo());
-                tvStokKodu.setText(s.getStokKodu());
-                tvStokAdi.setText(s.getUrunAdi());
-                okunmusUrun.setBarkodNo(s.getBarkodNo());
-                okunmusUrun.setStokKodu(s.getStokKodu());
-                okunmusUrun.setUrunAdi(s.getUrunAdi());
-            }
-        }
-    }
     private void ClearInputsUI(){
         tvStokBarkod.setText("");
         tvStokKodu.setText("");
@@ -286,6 +257,17 @@ public class DepoCikisFragment extends Fragment {
         tvAdet.setText("");
         tvAdres.setText("");
         tvLot.setText("");
-        okunmusUrun = new DepoUrun();
+        okunmusUrun = new DepoHaraketi();
+    }
+    private void alanSec(int alan){
+        alanSecili = alan;
+        if(alan == 0){
+            tvAdet.setBackgroundColor(Color.parseColor("#00000000"));
+            tvLot.setBackground(getResources().getDrawable(R.color.black_overlay));
+        }
+        else if(alan ==1){
+            tvAdet.setBackground(getResources().getDrawable(R.color.black_overlay));
+            tvLot.setBackgroundColor(Color.parseColor("#00000000"));
+        }
     }
 }

@@ -5,22 +5,29 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.spk.spkbarkoduygulamas.helpers.Hesap;
 
 /* CREATED BY Doruk Ertoğlu and
  Tuğkan Söğüt 2020 */
 
 public class MainActivity extends AppCompatActivity {
-    static Fragment activeFragment;
-
+    static public Hesap giriliHesap;
+    TextView tvHesap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        tvHesap = findViewById(R.id.textViewHesap);
+        giriliHesap = null;
     }
 
     @Override
@@ -28,23 +35,29 @@ public class MainActivity extends AppCompatActivity {
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.navigationFragment);
         Fragment fragment = navHostFragment.getChildFragmentManager().getFragments().get(0);
-        if(fragment instanceof DepoCikisFragment){
-            ((DepoCikisFragment)fragment).myOnKeyDown(keyCode);
+        if(fragment instanceof DepoGirisCikisFragment){
+            ((DepoGirisCikisFragment)fragment).myOnKeyDown(keyCode);
         }
-        else if(fragment instanceof DepoGirisFragment){
-            ((DepoGirisFragment)fragment).myOnKeyDown(keyCode);
-        }
-
         return super.onKeyDown(keyCode, event);
     }
+
     public static void hideKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        //Find the currently focused view, so we can grab the correct window token from it.
         View view = activity.getCurrentFocus();
-        //If no view currently has focus, create a new one, just so we can grab a window token from it
         if (view == null) {
             view = new View(activity);
         }
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public void girisYap(Hesap girilenHesap){
+        giriliHesap = girilenHesap;
+        Toast.makeText(this, "Giriş Yapıldı", Toast.LENGTH_SHORT).show();
+        tvHesap.setText(giriliHesap.getIsim() + " " + giriliHesap.getSoyisim());
+    }
+
+    public void cikisYap(){
+        giriliHesap = null;
+        tvHesap.setText("Giriş Yapınız");
     }
 }

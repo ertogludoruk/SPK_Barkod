@@ -24,25 +24,23 @@
             android:id="@+id/action_mainMenuFragment_to_urunOkuFragment"
             app:destination="@id/urunOkuFragment" />
         <action
-            android:id="@+id/action_mainMenuFragment_to_depoGirisFragment"
-            app:destination="@id/depoGirisFragment" />
-        <action
             android:id="@+id/action_mainMenuFragment_to_urunAraFragment"
             app:destination="@id/urunAraFragment" />
         <action
-            android:id="@+id/action_mainMenuFragment_to_depoCikisFragment"
-            app:destination="@id/depoCikisFragment" />
+            android:id="@+id/action_mainMenuFragment_to_depoGirisCikisFragment"
+            app:destination="@id/depoGirisCikisFragment" >
+            <argument
+                android:name="argGirisCikis" />
+        </action>
+        <action
+            android:id="@+id/action_mainMenuFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/urunOkuFragment"
         android:name="com.spk.spkbarkoduygulamas.UrunOkuFragment"
         android:label="fragment_urun_oku"
         tools:layout="@layout/fragment_urun_oku" />
-    <fragment
-        android:id="@+id/depoGirisFragment"
-        android:name="com.spk.spkbarkoduygulamas.DepoGirisFragment"
-        android:label="fragment_depo_giris"
-        tools:layout="@layout/fragment_depo_giris" />
     <fragment
         android:id="@+id/urunAraFragment"
         android:name="com.spk.spkbarkoduygulamas.UrunAraFragment"
@@ -58,8 +56,28 @@
         android:label="UrunGosterFragment"
         tools:layout="@layout/fragment_urun_goster"/>
     <fragment
-        android:id="@+id/depoCikisFragment"
-        android:name="com.spk.spkbarkoduygulamas.DepoCikisFragment"
-        android:label="DepoCikisFragment"
-        tools:layout="@layout/fragment_depo_cikis"/>
+        android:id="@+id/depoGirisCikisFragment"
+        android:name="com.spk.spkbarkoduygulamas.DepoGirisCikisFragment"
+        android:label="DepoGirisCikisFragment"
+        tools:layout="@layout/fragment_depo_giriscikis">
+        <argument
+            android:name="argGirisCikis"
+            app:argType="com.spk.spkbarkoduygulamas.helpers.Haraket" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.spk.spkbarkoduygulamas.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_mainMenuFragment11"
+            app:destination="@id/mainMenuFragment"
+            app:popUpTo="@id/app_navi"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_loginFragment_self"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/mainMenuFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
 </navigation>
