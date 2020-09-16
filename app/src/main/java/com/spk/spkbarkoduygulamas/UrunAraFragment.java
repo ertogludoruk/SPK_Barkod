@@ -24,6 +24,8 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.spk.spkbarkoduygulamas.helpers.DBManager;
+import com.spk.spkbarkoduygulamas.omdb.DepoYeri;
+import com.spk.spkbarkoduygulamas.omdb.Stok;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -60,41 +62,22 @@ public class UrunAraFragment extends Fragment {
         super.onCreate(savedInstanceState); }
 
     public List<String> refreshList(String text){
-        List<String> list = new ArrayList<String>();
-        try{
-            Connection connect = DBManager.CONN_MSSql_DB("MikroDB_V16_V01","mikros","mikro","192.168.1.249");
-            String queryStmt =
-                    "SELECT * FROM [BARKOD_TANIMLARI] WHERE [bar_stokkodu] LIKE '"+ text + "%'";
-            PreparedStatement ps = connect.prepareStatement(queryStmt);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                String str = rs.getString("bar_stokkodu");
-                list.add(str);
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        return list;
-    }
-    public List<String> refreshListAdres(String text){
         List<String> list = new ArrayList<>();
-        try{
-            Connection connect = DBManager.CONN_MSSql_DB("DEPO_DB","depo_us","depo2020","192.168.1.249");
-            String queryStmt =
-                    "SELECT * FROM [DepoYerleri] WHERE [adres_adi] LIKE '"+ text + "%'";
-            PreparedStatement ps = connect.prepareStatement(queryStmt);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                String str = rs.getString("adres_adi");
-                list.add(str);
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
+        Stok[] stoks = MainActivity.dbMain.userDao().getStokFromChars(text+"%");
+        for(Stok stok:stoks){
+            list.add(stok.stokKodu);
         }
         return list;
     }
+    public List<String> refreshListAdres(){
+        List<String> list = new ArrayList<>();
+        DepoYeri[] depoYeris = MainActivity.dbMain.userDao().getButunDepoYerleri();
+        for(DepoYeri yer:depoYeris){
+            list.add(yer.adresAdi);
+        }
+        return list;
+    }
+
 
     @Nullable
     @Override
@@ -141,9 +124,9 @@ public class UrunAraFragment extends Fragment {
                         String text = edit_text.getText().toString();
                         text = text.substring(0, text.length() - 1);
 
-                        List<String> list = new ArrayList<>();
+                        List<String> list = null;
                         if(spinner.getSelectedItem().toString().equals("ADRES")){
-                            list = refreshListAdres(text);
+                            list = refreshListAdres();
                         }
                         else if(spinner.getSelectedItem().toString().equals("STOK KODU")){
                             list = refreshList(text);
@@ -184,27 +167,14 @@ public class UrunAraFragment extends Fragment {
             @Override
             public void onPrimaryClipChanged() {
                 String barcode = Objects.requireNonNull(clipboard.getPrimaryClip()).getItemAt(0).coerceToText(context).toString();
+                if(barcode.equals(" ")){return;}
                 if(barcode.contains("DEPO_")){
                     String depoAdi = barcode.substring(5);
                     spinner.setSelection(1);
                     edit_text.setText(depoAdi);
                 }
                 else{
-                    try{
-                        Connection connect = DBManager.CONN_MSSql_DB("MikroDB_V16_V01","mikros","mikro","192.168.1.249");
-                        String queryStmt =
-                                String.format("SELECT [bar_stokkodu] FROM [BARKOD_TANIMLARI] WHERE [bar_kodu]='%s'", barcode);
-                        PreparedStatement ps = connect.prepareStatement(queryStmt);
-                        ResultSet rs = ps.executeQuery();
-                        rs.next();
-                        String stok_kodu= rs.getString("bar_stokkodu");
-                        ps.close();
-                        spinner.setSelection(0);
-                        edit_text.setText(stok_kodu);
-                    }
-                    catch (Exception e){
 
-                    }
                 }
 
             }

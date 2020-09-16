@@ -15,7 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.spk.spkbarkoduygulamas.helpers.DBManager;
-import com.spk.spkbarkoduygulamas.helpers.Hesap;
+import com.spk.spkbarkoduygulamas.omdb.Hesap;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -63,30 +63,15 @@ public class LoginFragment extends Fragment {
                     String kullaniciAdi = editTextKullaniciAdi.getText().toString();
                     String sifre = editTextSifre.getText().toString();
                     if(kullaniciAdi.length()>4 && sifre.length()>4 ){
-                        try{
-                            Connection connect = DBManager.CONN_MSSql_DB("DEPO_DB","depo_us","depo2020","192.168.1.249");
-                            String queryStmt = "SELECT *\n" +
-                                    "FROM DEPO_DB.dbo.Depo_Personelleri WHERE kullaniciadi = ? AND sifre = ?";
-                            PreparedStatement ps = connect.prepareStatement(queryStmt);
-                            ps.setString(1,kullaniciAdi);
-                            ps.setString(2,sifre);
-                            ResultSet rs = ps.executeQuery();
-                            if(rs.next()){
-                                Hesap hesap = new Hesap();
-                                hesap.setId(rs.getInt("id"));
-                                hesap.setIsim(rs.getString("isim"));
-                                hesap.setSoyisim(rs.getString("soyisim"));
-                                hesap.setKullaniciAdi(rs.getString("kullaniciadi"));
-                                MainActivity mainActivity = (MainActivity)getActivity();
-                                mainActivity.girisYap(hesap);
-                                Navigation.findNavController(getActivity(),R.id.navigationFragment).navigate(R.id.action_loginFragment_to_mainMenuFragment11);
-                            }
-                            else{
-                                Toast.makeText(context, "Yanlış Giriş Yapıldı", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                        catch (Exception e){
+                        Hesap hesap = MainActivity.dbMain.userDao().findUserByIdAndPass(kullaniciAdi,sifre);
 
+                        MainActivity mainActivity = (MainActivity)getActivity();
+                        if(hesap !=null){
+                            mainActivity.girisYap(hesap);
+                            Navigation.findNavController(getActivity(),R.id.navigationFragment).navigate(R.id.action_loginFragment_to_mainMenuFragment11);
+                        }
+                        else{
+                            Toast.makeText(context, "Kullanıcı adı Veya Şifre Hatalı", Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -97,7 +82,7 @@ public class LoginFragment extends Fragment {
             });
         }
         else{
-            editTextKullaniciAdi.setText(MainActivity.giriliHesap.getKullaniciAdi());
+            editTextKullaniciAdi.setText(MainActivity.giriliHesap.kullaniciAdi);
             editTextSifre.setEnabled(false);
             buttonGiris.setText("Çıkış Yap");
             buttonGiris.setOnClickListener(new View.OnClickListener() {

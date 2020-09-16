@@ -1,176 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="5dp"
-    tools:context=".UrunOkuFragment">
+    tools:context=".UrunOkuFragment" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@drawable/back"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/editTextTextPersonName"
-            android:layout_width="95dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/back"
-            android:ems="10"
-            android:inputType="none"
-            android:nestedScrollingEnabled="false"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
-            android:text="@string/barkod"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/textViewBarkod"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:nestedScrollingEnabled="false"
-            android:textSize="18sp"
-            android:visibility="visible" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@drawable/back"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/editTextTextPersonName15"
-            android:layout_width="95dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/back"
-            android:ems="10"
-            android:inputType="none"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
-            android:text="@string/kod"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/textViewStokKodu"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="18sp"
-            android:visibility="visible" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@drawable/back"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/editTextTextPersonName14"
-            android:layout_width="95dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/back"
-            android:ems="10"
-            android:inputType="none"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
-            android:text="@string/adi"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/textViewStokAdi"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="18sp"
-            android:visibility="visible" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@drawable/back"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/editTextTextPersonName13"
-            android:layout_width="95dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/back"
-            android:ems="10"
-            android:inputType="none"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
-            android:text="@string/cins"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/textViewCins"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="18sp"
-            android:visibility="visible" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@drawable/back"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/textView12"
-            android:layout_width="95dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/back"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
-            android:text="@string/birim"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/textViewBirim"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="18sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@drawable/back"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/textView10"
-            android:layout_width="95dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/back"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
-            android:text="@string/asamadaki_miktar"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/textViewAdet"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="18sp" />
-    </LinearLayout>
-
-</LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RecyclerViewOku"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/list_okuma_sutun" />
+</androidx.constraintlayout.widget.ConstraintLayout>

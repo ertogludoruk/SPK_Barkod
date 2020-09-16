@@ -35,6 +35,9 @@
         <action
             android:id="@+id/action_mainMenuFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_mainMenuFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/urunOkuFragment"
@@ -62,7 +65,8 @@
         tools:layout="@layout/fragment_depo_giriscikis">
         <argument
             android:name="argGirisCikis"
-            app:argType="com.spk.spkbarkoduygulamas.helpers.Haraket" />
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -80,4 +84,9 @@
             app:popUpTo="@id/mainMenuFragment"
             app:popUpToInclusive="false" />
     </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.spk.spkbarkoduygulamas.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
 </navigation>

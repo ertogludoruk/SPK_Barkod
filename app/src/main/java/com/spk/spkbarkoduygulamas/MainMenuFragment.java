@@ -10,8 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.spk.spkbarkoduygulamas.helpers.Haraket;
-
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link MainMenuFragment#newInstance} factory method to
@@ -24,6 +22,7 @@ public class MainMenuFragment extends Fragment {
     ImageView depoAraImage;
     ImageView depoCikisImage;
     ImageView hesapGirisImage;
+    ImageView ayarlarImage;
 
 
     public MainMenuFragment() {
@@ -60,7 +59,7 @@ public class MainMenuFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("argGirisCikis",Haraket.GIRIS);
+                bundle.putSerializable("argGirisCikis",0);
                 Navigation.findNavController(getActivity(),R.id.navigationFragment).navigate(R.id.action_mainMenuFragment_to_depoGirisCikisFragment, bundle);
             }
         });
@@ -76,7 +75,7 @@ public class MainMenuFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("argGirisCikis",Haraket.CIKIS);
+                bundle.putSerializable("argGirisCikis",1);
                 Navigation.findNavController(getActivity(),R.id.navigationFragment).navigate(R.id.action_mainMenuFragment_to_depoGirisCikisFragment, bundle);
             }
         });
@@ -86,6 +85,13 @@ public class MainMenuFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Navigation.findNavController(getActivity(),R.id.navigationFragment).navigate(R.id.action_mainMenuFragment_to_loginFragment);
+            }
+        });
+        ayarlarImage = view.findViewById(R.id.imageView_Settings);
+        ayarlarImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(getActivity(),R.id.navigationFragment).navigate(R.id.action_mainMenuFragment_to_settingsFragment);
             }
         });
 

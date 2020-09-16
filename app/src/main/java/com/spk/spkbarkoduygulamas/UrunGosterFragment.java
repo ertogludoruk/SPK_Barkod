@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,8 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.spk.spkbarkoduygulamas.helpers.DBManager;
-import com.spk.spkbarkoduygulamas.helpers.DepoHaraketi;
-import com.spk.spkbarkoduygulamas.helpers.Haraket;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

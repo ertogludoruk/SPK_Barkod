@@ -38,8 +38,16 @@
         android:layout_height="@dimen/menu_button"
         android:layout_marginTop="36dp"
         android:src="@drawable/hesap_islemi_icon"
-        app:layout_constraintEnd_toEndOf="@+id/imageView_Cikis"
         app:layout_constraintStart_toStartOf="@+id/imageView_Giris"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_Giris" />
+
+    <ImageView
+        android:id="@+id/imageView_Settings"
+        android:layout_width="@dimen/menu_button"
+        android:layout_height="@dimen/menu_button"
+        android:layout_marginTop="36dp"
+        android:src="@drawable/ic_settings"
+        app:layout_constraintStart_toEndOf="@+id/imageView_Hesap"
         app:layout_constraintTop_toBottomOf="@+id/imageView_Giris" />
 
     <ImageView

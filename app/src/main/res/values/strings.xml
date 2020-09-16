@@ -1,40 +1,5 @@
 <resources>
     <string name="app_name">Spk Barkod Uygulaması</string>
-    <string name="barkod">BARKOD:</string>
-    <string name="kod">KOD:</string>
-    <string name="adi">ADI:</string>
-    <string name="cins">CİNSİ:</string>
-    <string name="birim">BİRİMİ:</string>
-    <string name="asamadaki_miktar">AŞAMADAKİ MİKTAR:</string>
-    <string name="adres">ADRES:</string>
-    <string name="check">check</string>
-    <string name="clear" />
-    <string name="evet">EVET</string>
-    <string name="hayir">HAYIR</string>
-    <string name="onay_mesaji">ONAYLAMAK İSTEDİĞİNİZDEN EMİN MİSİNİZ ?</string>
-    <string name="adet_girisi">ADET GİRİNİZ:</string>
-    <string name="barkod_girisi">BARKOD GİRİNİZ:</string>
-    <string name="veya">VEYA</string>
-    <string name="urun_adi">ÜRÜN ADI:</string>
-    <string name="veri_tabani_ara">VERİTABANINDA ARA</string>
-    <string name="stok_kodu">STOK KODU:</string>
-    <string name="tarih">TARİH:</string>
-    <string name="miktar">MİKTAR:</string>
-    <string name="adresi">Adresi:</string>
-    <string name="depo_title_giris">DEPO ÜRÜN GİRİŞ</string>
-    <string name="depo_title_cikis">DEPO ÜRÜN ÇIKIŞ</string>
-    <string name="onayla">Onayla</string>
-    <string name="temizle">Temizle</string>
-    <string name="lot_giris">LOT GİR:</string>
-    <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome!"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="depo_title_giris">Depo Girişi</string>
+    <string name="depo_title_cikis">Depo Çıkışı</string>
 </resources>

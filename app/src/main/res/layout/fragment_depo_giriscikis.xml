@@ -33,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:paddingTop="5dp"
-                android:text="@string/onay_mesaji"
+                android:text="Onaylıyor Musunuz"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textSize="16sp" />
@@ -52,7 +52,7 @@
                 android:layout_width="120dp"
                 android:layout_height="match_parent"
                 android:gravity="center_horizontal|center_vertical"
-                android:text="@string/evet"
+                android:text="Evet"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
             <TextView
@@ -60,7 +60,7 @@
                 android:layout_width="120dp"
                 android:layout_height="match_parent"
                 android:gravity="center_horizontal|center_vertical"
-                android:text="@string/hayir"
+                android:text="Hayır"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
         </LinearLayout>
 
@@ -110,13 +110,13 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.25"
                     android:paddingLeft="5dp"
-                    android:text="@string/barkod"
+                    android:text="Barkod"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/textViewBarkod"
+                    android:id="@+id/tvOkuValue"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.75"
@@ -138,7 +138,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.25"
                     android:paddingLeft="5dp"
-                    android:text="@string/kod"
+                    android:text="Stok Kodu"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -165,7 +165,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.25"
                     android:paddingLeft="5dp"
-                    android:text="@string/adi"
+                    android:text="Stok Adı"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -198,7 +198,7 @@
                 android:layout_width="140dp"
                 android:layout_height="match_parent"
                 android:gravity="center_horizontal|center_vertical"
-                android:text="@string/adres"
+                android:text="Adres:"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textSize="20sp" />
 
@@ -230,7 +230,7 @@
                 android:layout_width="140dp"
                 android:layout_height="match_parent"
                 android:gravity="center_horizontal|center_vertical"
-                android:text="@string/adet_girisi"
+                android:text="Adet:"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textSize="20sp" />
 
@@ -264,7 +264,7 @@
                 android:layout_width="140dp"
                 android:layout_height="match_parent"
                 android:gravity="center_horizontal|center_vertical"
-                android:text="@string/lot_giris"
+                android:text="Lot:"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textSize="20sp" />
 
@@ -290,7 +290,6 @@
                 android:layout_width="68dp"
                 android:layout_height="66dp"
                 android:layout_marginBottom="16dp"
-                android:contentDescription="@string/check"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
@@ -304,7 +303,6 @@
                 android:layout_marginStart="144dp"
                 android:layout_marginBottom="16dp"
                 android:background="#FFFFFF"
-                android:contentDescription="@string/clear"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:srcCompat="@drawable/delete" />
