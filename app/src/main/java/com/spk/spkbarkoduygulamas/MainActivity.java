@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         tvHesap = findViewById(R.id.textViewHesap);
-        giriliHesap = null;
+        cikisYap();
         dbMain = Room.databaseBuilder(getApplicationContext(),
                 AppDatabase.class, "database-v01").allowMainThreadQueries().build();
     }

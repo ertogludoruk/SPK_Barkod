@@ -23,6 +23,8 @@ import java.util.List;
 public class SettingsFragment extends Fragment {
 
     Button buttonStokAl;
+    Button buttonVeriSıfırla;
+    Button buttonHaraketVerileriniKaydet;
 
 
 
@@ -55,6 +57,31 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        buttonVeriSıfırla = view.findViewById(R.id.button_Sifirla);
+        buttonVeriSıfırla.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.dbMain.userDao().deleteDepoHaraketleri();
+            }
+        });
+
+        buttonHaraketVerileriniKaydet = view.findViewById(R.id.buttonVeriYedekle);
+
+        buttonHaraketVerileriniKaydet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try{
+                    Connection connect = DBManager.CONN_MSSql_DB("DEPO_DB","depo_us","depo2020","192.168.1.249");
+                    String queryStmt =
+                            String.format("INSERT TO\n" +
+                                    "  FROM [MikroDB_V16_V01].[dbo].[Tugkan1]");
+                }
+                catch (Exception e){
+
+                }
+            }
+        });
+
         return view;
     }
 
@@ -84,12 +111,13 @@ public class SettingsFragment extends Fragment {
             MainActivity.dbMain.userDao().deleteDepoYeriData();
             connect = DBManager.CONN_MSSql_DB("DEPO_DB","depo_us","depo2020","192.168.1.249");
             queryStmt =
-                    "SELECT [adres_adi] FROM [DepoYerleri] WHERE [adres_adi]";
+                    "SELECT * FROM [DepoYerleri]";
             ps = connect.prepareStatement(queryStmt);
             rs = ps.executeQuery();
             List<DepoYeri> yerler = new ArrayList<>();
             while (rs.next()) {
                 DepoYeri yer = new DepoYeri();
+                yer.guid = rs.getInt("id");
                 yer.adresAdi =  rs.getString("adres_adi");
                 yerler.add(yer);
             }
@@ -98,7 +126,7 @@ public class SettingsFragment extends Fragment {
             MainActivity.dbMain.userDao().deleteHesapsData();
             connect = DBManager.CONN_MSSql_DB("DEPO_DB","depo_us","depo2020","192.168.1.249");
             queryStmt =
-                    "SELECT [adres_adi] FROM [DepoYerleri] WHERE [adres_adi]";
+                    "SELECT * FROM [Depo_Personelleri]";
             ps = connect.prepareStatement(queryStmt);
             rs = ps.executeQuery();
             List<Hesap> hesaps = new ArrayList<>();

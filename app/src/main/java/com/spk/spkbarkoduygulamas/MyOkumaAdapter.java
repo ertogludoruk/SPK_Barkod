@@ -8,12 +8,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
 import java.util.Map;
 
 public class MyOkumaAdapter extends RecyclerView.Adapter<MyOkumaAdapter.MyViewHolder> {
-    private Map<String,String> mDataset;
+    private List<String[]> mDataset;
 
-    public MyOkumaAdapter(Map<String,String> dataSet){
+    public MyOkumaAdapter(List<String[]> dataSet){
 
         mDataset = dataSet;
     }
@@ -28,8 +29,8 @@ public class MyOkumaAdapter extends RecyclerView.Adapter<MyOkumaAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        String key = (String) mDataset.keySet().toArray()[position];
-        String value = mDataset.get(key);
+        String key = mDataset.get(position)[0];
+        String value = mDataset.get(position)[1];
         holder.column.setText(key);
         holder.value.setText(value);
 

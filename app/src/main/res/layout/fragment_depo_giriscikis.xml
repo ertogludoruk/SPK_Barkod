@@ -25,18 +25,28 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textView6"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="30dp"
                 android:paddingTop="5dp"
                 android:text="Onaylıyor Musunuz"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/editTextGidenFirma"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="Giden Yer"
+                android:inputType="textPersonName"
+                android:visibility="visible" />
 
         </LinearLayout>
 
@@ -133,7 +143,7 @@
                 android:showDividers="middle">
 
                 <TextView
-                    android:id="@+id/textView30"
+                    android:id="@+id/textViewStokKodu1"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.25"
@@ -160,7 +170,7 @@
                 android:showDividers="middle">
 
                 <TextView
-                    android:id="@+id/textView31"
+                    android:id="@+id/textViewStokAdi1"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.25"
@@ -260,7 +270,7 @@
             android:showDividers="middle">
 
             <TextView
-                android:id="@+id/textView17"
+                android:id="@+id/tvLotAdi"
                 android:layout_width="140dp"
                 android:layout_height="match_parent"
                 android:gravity="center_horizontal|center_vertical"

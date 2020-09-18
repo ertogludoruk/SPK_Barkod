@@ -55,6 +55,10 @@ public class LoginFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         editTextKullaniciAdi = view.findViewById(R.id.hesapEditTextTextKullaniciAdi);
         editTextSifre = view.findViewById(R.id.hesapEditTextTextPassword);
+
+        editTextKullaniciAdi.setShowSoftInputOnFocus(false);
+        editTextSifre.setShowSoftInputOnFocus(false);
+
         buttonGiris = view.findViewById(R.id.hesapButtonGiris);
         if(MainActivity.giriliHesap == null){
             buttonGiris.setOnClickListener(new View.OnClickListener() {
@@ -62,7 +66,7 @@ public class LoginFragment extends Fragment {
                 public void onClick(View v) {
                     String kullaniciAdi = editTextKullaniciAdi.getText().toString();
                     String sifre = editTextSifre.getText().toString();
-                    if(kullaniciAdi.length()>4 && sifre.length()>4 ){
+                    if(kullaniciAdi.length()>0 && sifre.length()>0 ){
                         Hesap hesap = MainActivity.dbMain.userDao().findUserByIdAndPass(kullaniciAdi,sifre);
 
                         MainActivity mainActivity = (MainActivity)getActivity();

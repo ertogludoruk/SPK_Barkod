@@ -155,8 +155,8 @@ public class UrunAraFragment extends Fragment {
                 else if (spinner.getSelectedItem().toString().equals("ADRES")){sp = "spinner_adres";}
 
                 Bundle bd = new Bundle();
-                bd.putString("key1", edit_text.getText().toString());
-                bd.putString("key2", sp);
+                bd.putString("keyData", edit_text.getText().toString());
+                bd.putString("keySpinnerChoice", sp);
 
                 Navigation.findNavController(getActivity(),R.id.navigationFragment).navigate(R.id.action_urunAraFragment_to_urunGosterFragment, bd);
             }
@@ -167,6 +167,7 @@ public class UrunAraFragment extends Fragment {
             @Override
             public void onPrimaryClipChanged() {
                 String barcode = Objects.requireNonNull(clipboard.getPrimaryClip()).getItemAt(0).coerceToText(context).toString();
+                edit_text.clearFocus();
                 if(barcode.equals(" ")){return;}
                 if(barcode.contains("DEPO_")){
                     String depoAdi = barcode.substring(5);
@@ -174,7 +175,12 @@ public class UrunAraFragment extends Fragment {
                     edit_text.setText(depoAdi);
                 }
                 else{
-
+                    Stok stok = MainActivity.dbMain.userDao().findStokByBarcode(barcode);
+                    if(stok != null) {
+                        spinner.setSelection(0);
+                        spinner.setSelection(0);
+                        edit_text.setText(stok.stokKodu);
+                    }
                 }
 
             }

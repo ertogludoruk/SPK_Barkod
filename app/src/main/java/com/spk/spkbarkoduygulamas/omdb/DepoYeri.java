@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 @Entity
 public class DepoYeri {
     @PrimaryKey(autoGenerate = true)
-    public int guid;
+    public Integer guid;
 
     @ColumnInfo(name = "adres_adi")
     public String adresAdi;

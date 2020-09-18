@@ -43,7 +43,12 @@
         android:id="@+id/urunOkuFragment"
         android:name="com.spk.spkbarkoduygulamas.UrunOkuFragment"
         android:label="fragment_urun_oku"
-        tools:layout="@layout/fragment_urun_oku" />
+        tools:layout="@layout/fragment_urun_oku" >
+        <action
+            android:id="@+id/action_urunOkuFragment_to_urunGosterFragment"
+            app:destination="@id/urunGosterFragment"
+            app:popUpTo="@id/mainMenuFragment" />
+    </fragment>
     <fragment
         android:id="@+id/urunAraFragment"
         android:name="com.spk.spkbarkoduygulamas.UrunAraFragment"
@@ -51,7 +56,8 @@
         tools:layout="@layout/fragment_urun_ara">
         <action
             android:id="@+id/action_urunAraFragment_to_urunGosterFragment"
-            app:destination="@id/urunGosterFragment" />
+            app:destination="@id/urunGosterFragment"
+            app:popUpTo="@id/mainMenuFragment" />
     </fragment>
     <fragment
         android:id="@+id/urunGosterFragment"

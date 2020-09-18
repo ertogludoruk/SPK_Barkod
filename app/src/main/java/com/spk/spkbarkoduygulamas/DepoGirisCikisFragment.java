@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -16,6 +17,12 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.spk.spkbarkoduygulamas.omdb.DepoHaraketi;
+import com.spk.spkbarkoduygulamas.omdb.Stok;
+
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Objects;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
 
@@ -25,7 +32,7 @@ public class DepoGirisCikisFragment extends Fragment {
     int alanSecili;
     Integer haraket;
 
-    DepoHaraketi okunmusUrun;
+    DepoHaraketi depoHaraketi;
 
     TextView tvStokBarkod;
     TextView tvStokKodu;
@@ -39,6 +46,8 @@ public class DepoGirisCikisFragment extends Fragment {
     TextView tvEvet;
     TextView tvHayir;
     LinearLayout popup;
+    EditText editTextGidenFirma;
+    TextView tvLotAdi;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -57,7 +66,7 @@ public class DepoGirisCikisFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        okunmusUrun = new DepoHaraketi();
+        depoHaraketi = new DepoHaraketi();
         haraket = (getArguments().getInt("argGirisCikis"));
     }
 
@@ -89,12 +98,18 @@ public class DepoGirisCikisFragment extends Fragment {
         tvLot = view.findViewById(R.id.textViewLot);
         tvAdres = view.findViewById(R.id.textViewAdres);
         tvTitle = view.findViewById(R.id.tvDepoTitle);
+        editTextGidenFirma = view.findViewById(R.id.editTextGidenFirma);
+        tvLotAdi = view.findViewById(R.id.tvLotAdi);
+
+        popup.setVisibility(View.GONE);
 
         if(haraket == 0){
             tvTitle.setText(R.string.depo_title_giris);
+            editTextGidenFirma.setVisibility(View.GONE);
         }
         else if(haraket == 1){
             tvTitle.setText(R.string.depo_title_cikis);
+            editTextGidenFirma.setVisibility(View.VISIBLE);
         }
 
         ivTemizle.setOnClickListener(new View.OnClickListener() {
@@ -111,14 +126,18 @@ public class DepoGirisCikisFragment extends Fragment {
                     Integer miktar = Integer.parseInt(tvAdet.getText().toString());
                     Integer lot = Integer.parseInt(tvLot.getText().toString());
                     if(miktar > 0 && lot > 0){
-
+                        depoHaraketi.adet = miktar;
+                        depoHaraketi.lotKodu = lot;
                     }
                 }
                 catch (Exception e){
 
                 }
+                depoHaraketi.haraket = haraket;
+                depoHaraketi.tarih = new Date();
+                depoHaraketi.musteri = editTextGidenFirma.getText().toString();
 
-                if(okunmusUrun !=null){
+                if(depoHaraketi.isReady()){
                     ivTemizle.setEnabled(false);
                     ivOnayla.setEnabled(false);
                     popup.setVisibility(View.VISIBLE);
@@ -133,7 +152,11 @@ public class DepoGirisCikisFragment extends Fragment {
                     tvEvet.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
+                            MainActivity.dbMain.userDao().insertDepoHaraketi(depoHaraketi);
+                            ivTemizle.setEnabled(true);
+                            ivOnayla.setEnabled(true);
+                            popup.setVisibility(View.INVISIBLE);
+                            ClearInputsUI();
                         }
                     });
                 }
@@ -147,7 +170,25 @@ public class DepoGirisCikisFragment extends Fragment {
         clipboard.addPrimaryClipChangedListener(new ClipboardManager.OnPrimaryClipChangedListener() {
             @Override
             public void onPrimaryClipChanged() {
-
+                String barcode = Objects.requireNonNull(clipboard.getPrimaryClip()).getItemAt(0).coerceToText(context).toString();
+                if(barcode.equals(" ")){return;}
+                if(barcode.contains("DEPO_")){
+                    String depoAdi = barcode.substring(5);
+                    depoHaraketi.adres = depoAdi;
+                    tvAdres.setText(depoHaraketi.adres);
+                }
+                else{
+                    Stok stok = MainActivity.dbMain.userDao().findStokByBarcode(barcode);
+                    if(stok!=null){
+                        depoHaraketi.stokKodu = stok.stokKodu;
+                        tvStokKodu.setText(depoHaraketi.stokKodu);
+                        tvStokAdi.setText(stok.stokIsim);
+                        tvStokBarkod.setText(stok.barkod);
+                    }
+                    else{
+                        Toast.makeText(context, "ÜRÜN STOKTA KAYITLI DEĞİL", Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
         });
 
@@ -165,6 +206,27 @@ public class DepoGirisCikisFragment extends Fragment {
             }
         });
 
+        tvLotAdi.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                Calendar calendar = Calendar.getInstance();
+                Integer day = calendar.get(Calendar.DAY_OF_WEEK);
+                day = day - 1;
+                if(day==0){
+                    day = 6;
+                }
+                Integer week = calendar.get(Calendar.WEEK_OF_YEAR);
+                Integer year = calendar.get(Calendar.YEAR);
+                year=year-2000;
+                String lotnum=String.format("%d%d%d",day,week,year);
+
+                tvLot.setText(lotnum);
+
+                return false;
+            }
+        });
+
         alanSec(0);
         return view;
     }
@@ -175,7 +237,8 @@ public class DepoGirisCikisFragment extends Fragment {
         tvAdet.setText("");
         tvAdres.setText("");
         tvLot.setText("");
-        okunmusUrun = new DepoHaraketi();
+        editTextGidenFirma.setText("");
+        depoHaraketi = new DepoHaraketi();
     }
     private void alanSec(int alan){
         alanSecili = alan;
