@@ -77,7 +77,6 @@ public class LoginFragment extends Fragment {
                         else{
                             Toast.makeText(context, "Kullanıcı adı Veya Şifre Hatalı", Toast.LENGTH_SHORT).show();
                         }
-
                     }
                     else {
                         Toast.makeText(context, "Geçerli Bir Personel Giriniz", Toast.LENGTH_SHORT).show();
@@ -98,7 +97,6 @@ public class LoginFragment extends Fragment {
                 }
             });
         }
-
         return view;
     }
 }

@@ -17,6 +17,7 @@ import com.spk.spkbarkoduygulamas.omdb.Stok;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,7 +77,7 @@ public class SettingsFragment extends Fragment {
                             String.format("INSERT TO\n" +
                                     "  FROM [MikroDB_V16_V01].[dbo].[Tugkan1]");
                 }
-                catch (Exception e){
+                catch (SQLException e){
 
                 }
             }
@@ -143,8 +144,7 @@ public class SettingsFragment extends Fragment {
             MainActivity.dbMain.userDao().instertHesapAll(hesaps);
 
         }
-        catch (Exception e){
-            String za = e.toString();
+        catch (SQLException e){
         }
 
     }

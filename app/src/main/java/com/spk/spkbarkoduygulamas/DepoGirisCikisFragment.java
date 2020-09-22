@@ -17,9 +17,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.spk.spkbarkoduygulamas.omdb.DepoHaraketi;
+import com.spk.spkbarkoduygulamas.omdb.DepoYeri;
 import com.spk.spkbarkoduygulamas.omdb.Stok;
 
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
@@ -130,7 +132,7 @@ public class DepoGirisCikisFragment extends Fragment {
                         depoHaraketi.lotKodu = lot;
                     }
                 }
-                catch (Exception e){
+                catch (NumberFormatException e){
 
                 }
                 depoHaraketi.haraket = haraket;
@@ -174,8 +176,16 @@ public class DepoGirisCikisFragment extends Fragment {
                 if(barcode.equals(" ")){return;}
                 if(barcode.contains("DEPO_")){
                     String depoAdi = barcode.substring(5);
-                    depoHaraketi.adres = depoAdi;
-                    tvAdres.setText(depoHaraketi.adres);
+                    DepoYeri yer = MainActivity.dbMain.userDao().getDepoYeri(depoAdi);
+                    if(yer != null){
+                        depoHaraketi.adres = depoAdi;
+                        tvAdres.setText(depoHaraketi.adres);
+                    }
+                    else{
+                        Toast.makeText(context, "DEPO ADRESİ TANIMLI DEĞİLDİR", Toast.LENGTH_SHORT).show();
+                    }
+
+
                 }
                 else{
                     Stok stok = MainActivity.dbMain.userDao().findStokByBarcode(barcode);

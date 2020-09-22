@@ -17,6 +17,11 @@ public class DepoHaraketi {
     public String adres;
     public Date tarih;
     public Integer haraket;
+    public Integer updated;
+
+    public DepoHaraketi(){
+        updated = 0;
+    }
 
     public boolean isReady(){
         if(stokKodu != null && lotKodu != null && adet != null && adres != null && tarih != null && haraket !=null ){

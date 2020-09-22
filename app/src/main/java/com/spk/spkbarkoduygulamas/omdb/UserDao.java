@@ -8,15 +8,14 @@ import java.util.List;
 
 @Dao
 public interface UserDao {
+    @Insert
+    public void insertStokAll(List<Stok> stokList);
 
     @Query("SELECT * FROM stok WHERE bar_kodu = :barkod")
     public Stok findStokByBarcode(String barkod);
 
     @Query("SELECT * FROM stok WHERE sto_kod = :stokKodu")
     public Stok findStokByStokKodu(String stokKodu);
-
-    @Insert
-    public void insertStokAll(List<Stok> stokList);
 
     @Query("DELETE FROM stok")
     public void deleteStokData();
@@ -43,6 +42,9 @@ public interface UserDao {
     @Query("SELECT adres_adi FROM depoyeri")
     public DepoYeri[] getButunDepoYerleri();
 
+    @Query("SELECT adres_adi FROM depoyeri WHERE adres_adi LIKE :depoYeri")
+    public DepoYeri getDepoYeri(String depoYeri);
+
     @Query("DELETE FROM depoyeri")
     public void deleteDepoYeriData();
 
@@ -53,20 +55,8 @@ public interface UserDao {
     @Query("SELECT * FROM depoharaketi WHERE stokKodu LIKE :stokKodu")
     public DepoHaraketi[] getDepoHaraketsFromStoKod(String stokKodu);
 
-    @Query("SELECT * FROM depoharaketi WHERE stokKodu LIKE :stokKodu AND haraket = 0")
-    public DepoHaraketi[] getDepoHaraketsFromStoKod0(String stokKodu);
-
-    @Query("SELECT * FROM depoharaketi WHERE stokKodu LIKE :stokKodu AND haraket = 1")
-    public DepoHaraketi[] getDepoHaraketsFromStoKod1(String stokKodu);
-
-    @Query("SELECT * FROM depoharaketi WHERE adres LIKE :adresi")
-    public DepoHaraketi[] getDepoHaraketsFromAdres(String adresi);
-
-    @Query("SELECT * FROM depoharaketi WHERE adres LIKE :adresi AND haraket = 0")
-    public DepoHaraketi[] getDepoHaraketsFromAdres0(String adresi);
-
-    @Query("SELECT * FROM depoharaketi WHERE adres LIKE :adresi AND haraket = 1")
-    public DepoHaraketi[] getDepoHaraketsFromAdres1(String adresi);
+    @Query("SELECT * FROM depoharaketi WHERE adres == :depoAdi")
+    public DepoHaraketi[] getDepoHaraketsFromDepoAdi(String depoAdi);
 
     @Query("DELETE FROM depoharaketi")
     public void deleteDepoHaraketleri();

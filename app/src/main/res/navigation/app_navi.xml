@@ -63,7 +63,11 @@
         android:id="@+id/urunGosterFragment"
         android:name="com.spk.spkbarkoduygulamas.UrunGosterFragment"
         android:label="UrunGosterFragment"
-        tools:layout="@layout/fragment_urun_goster"/>
+        tools:layout="@layout/fragment_urun_goster">
+        <argument
+            android:name="keyData"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/depoGirisCikisFragment"
         android:name="com.spk.spkbarkoduygulamas.DepoGirisCikisFragment"

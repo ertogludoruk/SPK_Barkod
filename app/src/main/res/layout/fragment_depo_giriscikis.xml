@@ -154,7 +154,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/textViewStokKodu"
+                    android:id="@+id/textViewDepoAdet"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.75"
@@ -181,7 +181,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/textViewStokAdi"
+                    android:id="@+id/textViewDepoAdi"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.75"

@@ -151,14 +151,16 @@ public class UrunAraFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String sp = "none";
-                if(spinner.getSelectedItem().toString().equals("STOK KODU")){sp = "spinner_stokkodu";}
-                else if (spinner.getSelectedItem().toString().equals("ADRES")){sp = "spinner_adres";}
+                if(spinner.getSelectedItem().toString().equals("STOK KODU")){
+                    Bundle bd = new Bundle();
+                    bd.putString("keyData", edit_text.getText().toString());
+                    Navigation.findNavController(getActivity(),R.id.navigationFragment).navigate(R.id.action_urunAraFragment_to_urunGosterFragment, bd);
+                }
+                else if (spinner.getSelectedItem().toString().equals("ADRES")){
+                    sp = "spinner_adres";
+                }
 
-                Bundle bd = new Bundle();
-                bd.putString("keyData", edit_text.getText().toString());
-                bd.putString("keySpinnerChoice", sp);
 
-                Navigation.findNavController(getActivity(),R.id.navigationFragment).navigate(R.id.action_urunAraFragment_to_urunGosterFragment, bd);
             }
         });
 
